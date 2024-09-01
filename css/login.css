@@ -12,14 +12,33 @@ body {
     background-repeat: no-repeat; /* Evita que la imagen se repita */
 }
 
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+}
 
+
+form {
+    display: flex;
+    justify-content: center;
+    align-items: ceter;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
+}
 .login {
     display: flex;
     align-self: center;
     align-items: center;
     flex-direction: column;
-    min-height: 280px;
     padding: 35px;
+    min-height: 280px;
+    max-width: 400px;
     min-width: 280px;
     margin: 100px 200px;
     background-color: #69B5CC;
@@ -46,7 +65,7 @@ button {
     align-items: center;
     flex-direction: column;
     padding: 2px 8px;
-    margin: auto;
+    margin: 10%;
     border: none;
     border-radius: 4px;
     background-color: #E7F5FA;
