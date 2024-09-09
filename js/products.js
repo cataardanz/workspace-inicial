@@ -26,20 +26,31 @@ function showProductsList(array) {
   document.getElementById("list-cards-products").innerHTML = htmlContentToAppend;
 }
 
+function searchProducts(query, products) {
+  const filteredProducts = products.filter(product => {
+    return product.name.toLowerCase().includes(query.toLowerCase()) ||
+           product.description.toLowerCase().includes(query.toLowerCase());   
+
+  });
+  return filteredProducts;
+}
+
 function fetching(data_url) {
   fetch(data_url)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
+    .then(response => response.json())
     .then(listaProductos => {
       showProductsList(listaProductos.products);
+      
+      const searchInput = document.getElementById('searchInput');
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();   
+
+        const filteredProducts = searchProducts(query, listaProductos.products);
+        showProductsList(filteredProducts);
+      });
     })
-    .catch(error => {
-      console.error('Error fetching the data:', error);
-    });
+    .catch(error => console.error('Error fetching the data:', error));
 }
 
 fetching(data_url);
+
