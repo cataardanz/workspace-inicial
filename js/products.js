@@ -35,22 +35,15 @@ function searchProducts(query, products) {
   return filteredProducts;
 }
 
-function fetching(data_url) {
-  fetch(data_url)
-    .then(response => response.json())
-    .then(listaProductos => {
-      showProductsList(listaProductos.products);
-      
-      const searchInput = document.getElementById('searchInput');
-      searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();   
+document.addEventListener("DOMContentLoaded",function(){
+  let catID = localStorage.getItem("catID");
+  let url = `${PRODUCTS_URL}${catID}.json`;
 
-        const filteredProducts = searchProducts(query, listaProductos.products);
-        showProductsList(filteredProducts);
-      });
-    })
-    .catch(error => console.error('Error fetching the data:', error));
-}
-
-fetching(data_url);
-
+ getJSONData(url).then(function(resultObj) {
+    if (resultObj.status === "ok") {
+      showProductsList(resultObj.data.products);
+    }
+  }).catch(function(error) {
+    console.error("Error fetching data: ", error);
+  });
+});
