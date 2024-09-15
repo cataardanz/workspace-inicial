@@ -1,5 +1,7 @@
 const data_url = "https://japceibal.github.io/emercado-api/cats_products/101.json";
 
+let productsArray = [];
+
 function showProductsList(array) {
   let htmlContentToAppend = `
     <div class="row row-cols-1 row-cols-md-3 g-4">`;
@@ -45,5 +47,40 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   }).catch(function(error) {
     console.error("Error fetching data: ", error);
+  });
+
+  //Filtra
+  document.getElementById('rangeFilterCount').addEventListener('click', function() {
+    let minPrice = document.getElementById('rangeFilterCountMin').value;
+    let maxPrice = document.getElementById('rangeFilterCountMax').value;
+  
+    let filteredProducts = productsArray.filter(product => {
+      let price = product.cost;
+      return (!minPrice || price >= minPrice) && (!maxPrice || price <= maxPrice);
+    });
+  
+    showProductsList(filteredProducts);
+  });
+
+  document.getElementById('clearRangeFilter').addEventListener('click', function() {
+    document.getElementById('rangeFilterCountMin').value = '';
+    document.getElementById('rangeFilterCountMax').value = '';
+    showProductsList(productsArray);
+  });
+  
+  //Ordenan
+  document.getElementById('sortPriceAsc').addEventListener('change', function() {
+    let sortedProducts = [...productsArray].sort((a, b) => a.cost - b.cost);
+    showProductsList(sortedProducts);
+  });
+  
+  document.getElementById('sortPriceDesc').addEventListener('change', function() {
+    let sortedProducts = [...productsArray].sort((a, b) => b.cost - a.cost);
+    showProductsList(sortedProducts);
+  });
+  
+  document.getElementById('sortByRelevance').addEventListener('change', function() {
+    let sortedProducts = [...productsArray].sort((a, b) => b.soldCount - a.soldCount);
+    showProductsList(sortedProducts);
   });
 });
