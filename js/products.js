@@ -49,6 +49,7 @@ document.addEventListener("DOMContentLoaded",function(){
     console.error("Error fetching data: ", error);
   });
 
+  //Filtra
   document.getElementById('rangeFilterCount').addEventListener('click', function() {
     let minPrice = document.getElementById('rangeFilterCountMin').value;
     let maxPrice = document.getElementById('rangeFilterCountMax').value;
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded",function(){
     showProductsList(productsArray);
   });
   
-  
+  //Ordenan
   document.getElementById('sortPriceAsc').addEventListener('change', function() {
     let sortedProducts = [...productsArray].sort((a, b) => a.cost - b.cost);
     showProductsList(sortedProducts);
