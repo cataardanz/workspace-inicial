@@ -29,12 +29,11 @@ function showProductsList(array) {
 }
 
 function searchProducts(query, products) {
-  const filteredProducts = products.filter(product => {
-    return product.name.toLowerCase().includes(query.toLowerCase()) ||
-           product.description.toLowerCase().includes(query.toLowerCase());   
-
+ 
+    return products.filter(product => {
+      return product.name.toLowerCase().includes(query.toLowerCase()) ||
+             product.description.toLowerCase().includes(query.toLowerCase());
   });
-  return filteredProducts;
 }
 
 document.addEventListener("DOMContentLoaded",function(){
@@ -43,7 +42,8 @@ document.addEventListener("DOMContentLoaded",function(){
 
  getJSONData(url).then(function(resultObj) {
     if (resultObj.status === "ok") {
-      showProductsList(resultObj.data.products);
+      productsArray =resultObj.data.products;
+      showProductsList(productsArray);
     }
   }).catch(function(error) {
     console.error("Error fetching data: ", error);
@@ -82,5 +82,11 @@ document.addEventListener("DOMContentLoaded",function(){
   document.getElementById('sortByRelevance').addEventListener('change', function() {
     let sortedProducts = [...productsArray].sort((a, b) => b.soldCount - a.soldCount);
     showProductsList(sortedProducts);
+  });
+
+  document.getElementById("searchInput").addEventListener("input", function (event) {
+    const searchQuery = event.target.value;
+    const filteredProducts = searchProducts(searchQuery, productsArray);
+    showProductsList(filteredProducts);
   });
 });
