@@ -8,6 +8,7 @@ function showProductsList(array) {
 
   for (let p of array) {
     htmlContentToAppend += `
+    <a href="product-info.html" onclick="setProdID(${p.id})">
       <div class="col">
         <div class="card h-100" style="border: 3px solid #69B5CC;">
           <img src="${p.image}" class="card-img-top" alt="Product Image">
@@ -20,12 +21,18 @@ function showProductsList(array) {
             <small class="text-muted">Vendidos: ${p.soldCount}</small>
           </div>
         </div>
-      </div>`;
+      </div>
+    </a>`;  
   }
 
   htmlContentToAppend += `
     </div>`; // Cerrar la fila
   document.getElementById("list-cards-products").innerHTML = htmlContentToAppend;
+}
+
+function setProdID(id) {
+  localStorage.setItem("ProdID", id);
+  window.location = "product-info.html"
 }
 
 function searchProducts(query, products) {
