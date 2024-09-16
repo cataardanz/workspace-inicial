@@ -1,0 +1,45 @@
+h2 {
+    padding-top: 35px;
+}
+
+.section {
+    display: flex;
+}
+  
+.product-info {
+   flex: 40%; 
+   margin-left: 60px;
+   padding-top: 20px;
+}
+  
+.carousel {
+  flex: 60%; 
+  max-width: 700px; 
+  overflow: hidden;
+}
+  
+.carousel img {
+   width: 100%;
+   height: auto;
+   object-fit: cover;
+}
+
+.carousel-control-prev,
+  .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25%;
+
+    }*/
+ 
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center; /* Opcional para alinear verticalmente */
+        padding: 50px;
+    }
