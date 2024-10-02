@@ -44,9 +44,8 @@ h2 {
 }
 
 #related-products {
-  display: block; 
+  display: flex; 
   flex-wrap: wrap;
-  gap: 20px; 
 }
 
 #related-products .product-item {
@@ -57,8 +56,33 @@ h2 {
 }
 .card {
   transition: transform 0.2s;
+  width: 100%;
 }
 
 .card:hover {
   transform: scale(0.8);
+}
+
+.review-card {
+  border-radius: 5px;
+  padding-left: 15px;
+  padding-top: 15px;
+  transition: transform 0.1s ease-in-out;
+  background-color: hsl(0, 0%, 99%);
+}
+
+.checked {
+  color: gold;
+  font-size: 25px;
+  letter-spacing: 3px;
+}
+
+.review-date em {
+  font-size: 9px;
+}
+
+.reviews-container {
+  display: flex;
+  flex-direction: column;
+  padding: 1em 0em 2em 10px;
 }
