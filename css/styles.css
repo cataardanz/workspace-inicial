@@ -196,3 +196,27 @@ a {
 .col {
   color: black;
 }
+
+.fa-star {
+  color:grey
+}
+.checked {
+  color: orange;
+}
+
+.btnEnviarPtc {
+color: gray
+}
+a {
+  text-decoration: none;
+}
+
+h3 {
+  margin-top: 10%;
+  
+}
+
+.mt-5 {
+  margin-top: 0;
+  display: inline;
+}

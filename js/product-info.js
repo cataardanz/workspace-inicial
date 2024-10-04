@@ -131,3 +131,28 @@ function updateProduct(id) {
     localStorage.setItem("ProdID", id)
     window.location.href = `product-info.html`; 
 }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.fa-star');
+    let lastClickedIndex = -1;
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            if (index === lastClickedIndex) {
+                // Si se hace clic en la misma estrella, desmarcar todas
+                stars.forEach(s => s.classList.remove('checked'));
+                lastClickedIndex = -1; // Reiniciar el índice
+            } else {
+            stars.forEach((s, i) => {
+                if (i <= index) {
+                    s.classList.add('checked');
+                } else {
+                    s.classList.remove('checked');
+                }
+            });
+            lastClickedIndex = index;
+        }
+    
+    });
+});
+});
