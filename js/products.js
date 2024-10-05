@@ -10,7 +10,7 @@ function showProductsList(array) {
     htmlContentToAppend += `
     <a href="product-info.html" onclick="setProdID(${p.id})">
       <div class="col">
-        <div class="card h-100" style="border: 3px solid #69B5CC;">
+        <div class="card h-100">
           <img src="${p.image}" class="card-img-top" alt="Product Image">
           <div class="card-body">
             <h5 class="card-title fw-bold">${p.name}</h5>

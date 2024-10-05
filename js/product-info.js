@@ -1,5 +1,6 @@
 let producto = {};
 let prodID = localStorage.getItem("ProdID");
+let urlComments = `${PRODUCT_INFO_COMMENTS_URL}${prodID}.json`;
 
 document.addEventListener("DOMContentLoaded", function () {
     let url = `${PRODUCT_INFO_URL}${prodID}.json`;
@@ -13,6 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }).catch(function (error) {
         console.error("Error al obtener los datos: ", error);
     });
+
+    getJSONData(urlComments).then(function (resultObj) {
+        if (resultObj.status === "ok") {
+            comentarios = resultObj.data;
+            showComments();
+        }
+    }).catch(function (error) {
+        console.error("Error al obtener los comentarios: ", error);
+    });
+
 });
 
 function showProductInfo() {
@@ -130,4 +141,45 @@ function initializeRelatedSection() {
 function updateProduct(id) {
     localStorage.setItem("ProdID", id)
     window.location.href = `product-info.html`; 
+}
+
+//Función para mostrar los comentarios de las reseñas.
+function showComments() {
+    let htmlCommentsToAppend = '';
+
+    if (comentarios.length > 0) {
+        comentarios.forEach(function(comment) {
+            htmlCommentsToAppend += `
+                <div class="review-card">
+                    <div class="review-header d-flex justify-content-between">
+                        <span class="checked">${getStars(comment.score)}</span>
+                    </div>
+                    <div class="review-body mt-2">
+                        <div class="user-info">
+                            <p class="pb-1 fs-6"><strong>${comment.user}</strong></p>
+                            <p style=" font-size: 14px">${comment.description}</p>
+                        </div>
+                        <p class="review-date"><em>${comment.dateTime}</em></p>
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        htmlCommentsToAppend += `<p>Este producto no tiene reseñas.</p>`;
+    }
+
+    document.getElementById("comments-section").innerHTML = htmlCommentsToAppend;
+}
+
+//Función para crear las estrellas
+function getStars(score) {
+    let stars = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= score) {
+            stars += `<i class="fa fa-star checked" style="color: gold;"></i>`; // estrella llena dorada
+        } else {
+            stars += `<i class="fa fa-star" style="color: lightgray;"></i>`; // estrella vacía
+        }
+    }
+    return stars;
 }
