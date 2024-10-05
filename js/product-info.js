@@ -1,4 +1,6 @@
 let producto = {};
+let comentarios = [];
+let userRating = 0; // Definir la variable para calificación
 let prodID = localStorage.getItem("ProdID");
 let urlComments = `${PRODUCT_INFO_COMMENTS_URL}${prodID}.json`;
 
@@ -41,11 +43,39 @@ document.addEventListener("DOMContentLoaded", function () {
                         s.classList.remove('checked');
                     }
                 });
-                lastClickedIndex = index;
+                userRating = index + 1; // Guardar la calificación seleccionada
+                lastClickedIndex = index; // Actualizar el índice de la última estrella seleccionada
             }
-        });
+         });
     });
-  
+
+    // Capturar el evento de clic en el botón para enviar la calificación y el comentario
+    document.getElementById("submit-rating").addEventListener("click", function () {
+        const commentText = document.getElementById("user-comment").value;
+
+        if (userRating > 0 && commentText.trim() !== "") {
+            // Crear un nuevo comentario basado en la entrada del usuario
+            const newComment = {
+                user: "Usuario Actual",
+                score: userRating,
+                description: commentText,
+                dateTime: new Date().toLocaleString() // Fecha y hora actual
+            };
+
+            // Agregar el nuevo comentario a la lista de comentarios
+            comentarios.push(newComment);
+
+            // Actualizar la sección de comentarios
+            showComments();
+
+            // Limpiar el área de texto y resetear las estrellas
+            document.getElementById("user-comment").value = "";
+            stars.forEach(star => star.classList.remove('checked'));
+            userRating = 0; // Resetear la calificación
+        } else {
+            alert("Por favor, selecciona una calificación y escribe un comentario antes de enviar.");
+        }
+    });
 });
 
 function showProductInfo() {
