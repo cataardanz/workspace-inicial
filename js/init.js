@@ -39,3 +39,20 @@ let getJSONData = function(url){
         return result;
     });
 }
+
+// Entrega 1 
+checkAuth()
+
+async function init(url) {
+  try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('Error en la petición');
+      const data = await response.json();
+      // Maneja los datos recibidos aquí
+  } catch (error) {
+      console.error('Error:', error);
+  }
+}
+
+// Llamar a la función init al cargar la página
+document.addEventListener("DOMContentLoaded", init);

@@ -6,16 +6,18 @@ h2 {
   display: flex;
 }
 
+.product-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .product-info {
-  flex: 40%;
-  margin-left: 60px;
-  padding-top: 20px;
+  flex: 1; /* Asegura que la info ocupe el espacio restante */
+  margin-left: 20px; /* Margen a la izquierda */
 }
 
 .carousel {
-  flex: 60%;
-  max-width: 700px;
-  overflow: hidden;
+  flex: 2; /* Da más espacio al carrusel */
 }
 
 .carousel img {
@@ -60,7 +62,9 @@ h2 {
 }
 
 .card:hover {
-  transform: scale(0.8);
+  transform: scale(1.05); /* Aumentar el tamaño */
+  transition: transform 0.2s; /* Efecto suave */
+  border-color: black;
 }
 
 .review-card {
@@ -85,4 +89,18 @@ h2 {
   display: flex;
   flex-direction: column;
   padding: 1em 0em 2em 10px;
+}
+
+@media (max-width: 768px) {
+  .section {
+      flex-direction: column; /* Cambia a columna en pantallas pequeñas */
+      gap: 15px; /* Espacio menor en pantallas pequeñas */
+  }
+  .product-info {
+      margin-left: 0; /* Elimina el margen en pantallas pequeñas */
+  }
+}
+
+#user-comment {
+  margin-bottom: 6px; /* Espacio debajo del formulario */
 }
