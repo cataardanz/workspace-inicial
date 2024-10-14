@@ -6,7 +6,10 @@ document.querySelector("#button_log").addEventListener("click", function() {
     if (usuario === "" || password === "") {
         alert ("Asegúrese de llenar ambos campos");
     } else {
-        window.location.href = "index.html";
+        // Simular autenticación ficticia
+        localStorage.setItem("loggedIn", "true");
+        localStorage.setItem("username", usuario); // Guarda el nombre de usuario
+        window.location.href = "index.html"; // Redirigir a la portada
     }
 
-})
+});

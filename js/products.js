@@ -1,6 +1,7 @@
 const data_url = "https://japceibal.github.io/emercado-api/cats_products/101.json";
 
 let productsArray = [];
+let filteredProducts = []; // Variable para almacenar productos filtrados
 
 function showProductsList(array) {
   let htmlContentToAppend = `
@@ -8,7 +9,7 @@ function showProductsList(array) {
 
   for (let p of array) {
     htmlContentToAppend += `
-    <a href="product-info.html" onclick="setProdID(${p.id})">
+    <a onclick="setProdID(${p.id})">
       <div class="col">
         <div class="card h-100">
           <img src="${p.image}" class="card-img-top" alt="Product Image">
@@ -50,6 +51,7 @@ document.addEventListener("DOMContentLoaded",function(){
  getJSONData(url).then(function(resultObj) {
     if (resultObj.status === "ok") {
       productsArray =resultObj.data.products;
+      filteredProducts = productsArray; // Inicializa filteredProducts con todos los productos
       showProductsList(productsArray);
     }
   }).catch(function(error) {
@@ -60,40 +62,41 @@ document.addEventListener("DOMContentLoaded",function(){
   document.getElementById('rangeFilterCount').addEventListener('click', function() {
     let minPrice = document.getElementById('rangeFilterCountMin').value;
     let maxPrice = document.getElementById('rangeFilterCountMax').value;
-  
-    let filteredProducts = productsArray.filter(product => {
+
+    filteredProducts = filteredProducts.filter(product => {
       let price = product.cost;
       return (!minPrice || price >= minPrice) && (!maxPrice || price <= maxPrice);
     });
-  
-    showProductsList(filteredProducts);
+
+    showProductsList(filteredByPrice);
   });
 
   document.getElementById('clearRangeFilter').addEventListener('click', function() {
     document.getElementById('rangeFilterCountMin').value = '';
     document.getElementById('rangeFilterCountMax').value = '';
-    showProductsList(productsArray);
+    filteredProducts = [...productsArray]; // Restablece los productos filtrados a todos
+    showProductsList(filteredProducts); // Muestra los productos filtrados actuales
   });
   
   //Ordenan
   document.getElementById('sortPriceAsc').addEventListener('change', function() {
-    let sortedProducts = [...productsArray].sort((a, b) => a.cost - b.cost);
+    let sortedProducts = [...filteredProducts].sort((a, b) => a.cost - b.cost);
     showProductsList(sortedProducts);
   });
   
   document.getElementById('sortPriceDesc').addEventListener('change', function() {
-    let sortedProducts = [...productsArray].sort((a, b) => b.cost - a.cost);
+    let sortedProducts = [...filteredProducts].sort((a, b) => b.cost - a.cost);
     showProductsList(sortedProducts);
   });
   
   document.getElementById('sortByRelevance').addEventListener('change', function() {
-    let sortedProducts = [...productsArray].sort((a, b) => b.soldCount - a.soldCount);
+    let sortedProducts = [...filteredProducts].sort((a, b) => b.soldCount - a.soldCount);
     showProductsList(sortedProducts);
   });
 
   document.getElementById("searchInput").addEventListener("input", function (event) {
     const searchQuery = event.target.value;
-    const filteredProducts = searchProducts(searchQuery, productsArray);
+    filteredProducts = searchProducts(searchQuery, productsArray); 
     showProductsList(filteredProducts);
   });
 });

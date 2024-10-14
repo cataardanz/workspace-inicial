@@ -52,11 +52,12 @@ document.addEventListener("DOMContentLoaded", function () {
     // Capturar el evento de clic en el botón para enviar la calificación y el comentario
     document.getElementById("submit-rating").addEventListener("click", function () {
         const commentText = document.getElementById("user-comment").value;
+        const loggedUser = localStorage.getItem("username");
 
         if (userRating > 0 && commentText.trim() !== "") {
             // Crear un nuevo comentario basado en la entrada del usuario
             const newComment = {
-                user: "Usuario Actual",
+                user: loggedUser,
                 score: userRating,
                 description: commentText,
                 dateTime: new Date().toLocaleString() // Fecha y hora actual
@@ -80,25 +81,28 @@ document.addEventListener("DOMContentLoaded", function () {
 
 function showProductInfo() {
     let htmlContentToAppend = `
-
     <div class="product-container">
-    <h2>${producto.name}</h2>
-    <hr>
-    <div class="section">
-    <div class="product-image">
-    ${showImages(producto.images)}  
-    </div>          
-    <div class="product-info">
-    <p><strong>Precio:</strong> ${producto.currency} ${producto.cost}</p>
-    <p><strong>Vendidos:</strong> ${producto.soldCount}</p>
-    <p><strong>Categoría:</strong> ${producto.category}</p><br>
-    <p><strong>Descripción</strong></p>
-    <p>${producto.description}</p>
-    </div> 
-    </div>  
+        <h2>${producto.name}</h2>
+        <hr>
+        <div class="section">
+            <div class="carousel">
+                ${showImages(producto.images)}  
+            </div>          
+            <div class="product-info">
+                <p><strong>Precio:</strong> ${producto.currency} ${producto.cost}</p>
+                <p><strong>Vendidos:</strong> ${producto.soldCount}</p>
+                <p><strong>Categoría:</strong> ${producto.category}</p><br>
+                <p><strong>Descripción:</strong></p>
+                <p>${producto.description}</p>
+            </div>
+        </div>  
     </div>`;
 
     document.getElementById("product-details").innerHTML = htmlContentToAppend;
+
+    if (producto.related) {
+        renderRelatedProducts(producto.related);
+    }
 }
 
 function showImages(images) {
@@ -170,13 +174,46 @@ function getStars(score) {
     let stars = '';
     for (let i = 1; i <= 5; i++) {
         if (i <= score) {
-            stars += `<i class="fa fa-star checked" style="color: gold;"></i>`; // estrella llena dorada
+            stars += `<i class="fa fa-star checked" style="color: gold;"></i>`;
         } else {
-            stars += `<i class="fa fa-star" style="color: lightgray;"></i>`; // estrella vacía
+            stars += `<i class="fa fa-star" style="color: lightgray;"></i>`;
         }
     }
     return stars;
 }
+
+function setupStarRating() {
+    const stars = document.querySelectorAll('.fa-star');
+    let lastClickedIndex = -1;
+    stars.forEach((star, index) => {
+        star.addEventListener('click', () => {
+            updateStarRating(index, stars);
+        });
+    });
+}
+
+function updateStarRating(index, stars) {
+    if (index === lastClickedIndex) {
+        stars.forEach(s => s.classList.remove('checked'));
+        lastClickedIndex = -1;
+    } else {
+        stars.forEach((s, i) => {
+            if (i <= index) {
+                s.classList.add('checked');
+            } else {
+                s.classList.remove('checked');
+            }
+        });
+        userRating = index + 1;
+        lastClickedIndex = index;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    setupStarRating();
+    // ... el resto de tu código
+});
+
 
 // Parte 4 :)
 
@@ -207,13 +244,12 @@ function renderRelatedProducts(products) {
         const productElement = document.createElement('div');
         productElement.classList.add('col-md-4'); 
         productElement.innerHTML = `
-        <div class="card mb-4"> <!-- Agregamos un margen inferior -->
-        <img src="${product.image}" class="card-img-top" alt="${product.name}">
-        <div class="card-body">
-        <h5 class="card-title">${product.name}</h5>
-        <p class="card-text">${product.currency} ${product.cost}</p>
-        <button class="btn btn-primary" onclick="updateProduct(${product.id})">Ver más</button>
-        </div>
+        <div class="card mb-4" onclick="updateProduct(${product.id})" style="cursor: pointer;"> <!-- Hacemos la tarjeta clicable -->
+            <img src="${product.image}" class="card-img-top" alt="${product.name}">
+            <div class="card-body">
+                <h5 class="card-title">${product.name}</h5>
+                <p class="card-text">${product.currency} ${product.cost}</p>
+            </div>
         </div>
         `;
         relatedProductsContainer.appendChild(productElement);
