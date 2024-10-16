@@ -1,0 +1,111 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.contenedor1 {
+    background-color: #DCF2F1;
+    width: auto;
+    padding: 25px 30px;
+    border-radius: 5px;
+}
+.titleForm {
+    font-size: 35px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+.input-group input {
+    outline: none;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding-left: 15px;
+    border-bottom-width: 2px;
+}
+.input-group input:focus, .input-group input:valid {
+    border-color: skyblue;
+}
+form .btn {
+    background-color: #FC4100;
+    width: 100%;
+    height: 40px;
+    margin: 40px 0;
+}
+form .btn input {
+    width: 100%;
+    height: 100%;
+    outline: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+form .btn:hover {
+    background-color: #0F1035;
+}
+.perfil {
+    font-size: medium;
+}
+#imageInput {
+    align-content: center;
+    padding: 10px;
+    margin: auto;
+}
+.imageInput {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+img#imagePreview {
+    padding: 10px;
+    border-radius: 50px;
+}
+h5 {
+    margin: 0;
+    font-size: 16px;
+}
+input[type="file"] {
+    margin-top: 10px;
+}
+.input-group small {
+    display: none;
+}
+.input-group input:invalid + small {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .contenedor1 {
+        width: 90%;
+    }
+    #imagePreview {
+        margin: 0;
+        padding: 0;
+        display: block;
+        flex-direction: row-reverse;
+        width: 30%; /* O el tamaño que desees */
+    }
+    .input-group {
+        flex-direction: row;
+        align-items: stretch;
+    }
+    button.btn {
+        width: 100%; /* Hacer que los botones ocupen el 100% en móviles */
+    }
+    .imageInput {
+        display: block;
+        align-content: fit-content;
+        gap: 0px;
+    }
+    input#imageInput {
+        align-self: auto
+    }
+};
+
+.text-danger {
+    display: none; /* Ocultar mensajes de error por defecto */
+}
