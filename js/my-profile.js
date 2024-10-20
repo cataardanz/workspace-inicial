@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById("form-validation");
-    const userEmail = localStorage.getItem('userEmail');
-    
-    // Cargar el email del usuario
-    if (userEmail) {
-        form.querySelector('input[type="email"]').value = userEmail;
+    const username = localStorage.getItem('username');
+    const loggedIn = localStorage.getItem('loggedIn') === 'true';
+
+    if (!loggedIn) {
+        // Redirigir a la página de login si no está logueado
+        window.location.href = 'login.html';
+    } else {
+        // Prellenar el campo de email
+        document.getElementById('email').value = username;
     }
 
     // Manejo del envío del formulario
