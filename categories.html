@@ -33,8 +33,15 @@
           <li class="nav-item" id="login-link">
             <a class="nav-link active" href="login.html">Iniciar Sesión</a>
           </li>
-          <li class="nav-item" id="user-info" style="display: none;">
-            <a class="nav-link active" href="login.html" id="user-name"></a>
+          <li class="nav-item dropdown" id="user-info" style="display: none;">
+            <a class="nav-link dropdown-toggle active" href="#" id="user-name" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="user-name">
+              <li><a class="dropdown-item" href="#" id="miCarrito">Mi Carrito</a></li>
+              <li><a class="dropdown-item" href="#" id="miPerfil">Mi Perfil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="#" id="cerrarSesion">Cerrar Sesión</a></li>
+            </ul>
           </li>
         </ul>
       </div>
