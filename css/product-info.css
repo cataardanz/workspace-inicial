@@ -104,3 +104,17 @@ h2 {
 #user-comment {
   margin-bottom: 6px; /* Espacio debajo del formulario */
 }
+/*Cambios para cuando está en dark-mode*/
+body.dark-mode {
+  background-color: #2C2C2E; /* Fondo oscuro */
+  color: white; /* Color de texto en modo oscuro */
+  }
+  body.dark-mode .user-info{
+    color: #2C2C2E;
+  }
+  body.dark-mode .review-date{
+    color: #2C2C2E;
+  }
+  body.dark-mode .card-body{
+    color: #2C2C2E;
+  }

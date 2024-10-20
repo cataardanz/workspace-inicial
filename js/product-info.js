@@ -271,3 +271,14 @@ function updateProduct(id) {
     localStorage.setItem("ProdID", id)
     window.location.href = `product-info.html`; 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    loadDarkMode();
+});
+
+function loadDarkMode() {
+    const darkModeEnabled = localStorage.getItem("darkMode") === "true";
+    if (darkModeEnabled) {
+        document.body.classList.add("dark-mode"); // Añadir clase para modo oscuro
+    }
+}
