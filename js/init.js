@@ -7,6 +7,32 @@ const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
 const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
 const EXT_TYPE = ".json";
 
+// Parte 2 Entrega 5
+
+function configureUserDropdown() {
+  const usuarioAutenticado = localStorage.getItem('loggedIn');  
+  if (usuarioAutenticado) {
+    // Redirigir a la pantalla del carrito
+    document.getElementById('miCarrito').addEventListener('click', function() {
+      window.location.href = 'cart.html'; 
+    });
+  
+    // Redirigir a la pantalla del perfil
+    document.getElementById('miPerfil').addEventListener('click', function() {
+      window.location.href = 'my-profile.html'; 
+    });
+  
+    document.getElementById('cerrarSesion').addEventListener('click', function() {
+      // Cierra sesion
+      localStorage.removeItem('loggedIn');
+      
+      // Redirige a la pantalla de login
+      window.location.href = 'login.html'; 
+    });
+  }
+}
+configureUserDropdown();
+
 let showSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "block";
 }
