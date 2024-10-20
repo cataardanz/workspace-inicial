@@ -1,0 +1,75 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+:root{
+    --dark-mode-width:65px;
+    --dark-mode-height:33px;
+    --bg-color-light: white;
+    --bg-color-dark: #2C2C2E;
+    --text-color-light: black;
+    --text-color-dark: white;
+}
+#switch{ 
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    transition: background-color 0.5s ease;
+}
+#switch.active{
+}
+.dark-mode{
+    width: var(--dark-mode-width);
+    height: var(--dark-mode-height);
+    display: flex;
+    align-items: center;
+    border-radius: 999px;
+    background-color: #DFDEDE;
+    cursor: pointer;
+    transition: background-color 0.5s ease;
+    border: 0.5px solid white;
+}
+#switch.active .dark-mode{
+    background-color: var(--bg-color-light);
+    border: 0.5px solid #c9c6c6;
+}
+.dark-mode .circle{
+    width: 40%;
+    height: 80%;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: white;
+    transform: translateX(15%);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.5s ease,background-color 0.5s ease;
+}
+#switch.active .circle{
+    transform: translateX(140%);
+    background-color: #2A2A2C;
+}
+.dark-mode .circle ion-icon{
+    width: 70%;
+    height: 70%;
+    position: absolute;
+    transition: transform 0.5s ease;
+}
+.dark-mode .circle .moon{
+    color: white;
+    transform: translateY(-120%);
+}
+#switch.active .circle .moon{
+    transform: translateX(0);
+}
+.dark-mode .circle .sun{
+    color: #FCDE5B;
+}
+#switch.active .circle .sun{
+    transform: translateY(120%);
+}
+
+

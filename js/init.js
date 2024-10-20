@@ -67,7 +67,14 @@ let getJSONData = function(url){
 }
 
 // Entrega 1 
-checkAuth()
+function checkAuth() {
+  if (!localStorage.getItem("loggedIn") && ! window.location.href.includes("login.html")) {
+      window.location.href = "login.html"; // Redirige a login.html si no está autenticado
+  }
+}
+
+// Llamar a la función checkAuth al cargar la página
+document.addEventListener("DOMContentLoaded", checkAuth);
 
 async function init(url) {
   try {
