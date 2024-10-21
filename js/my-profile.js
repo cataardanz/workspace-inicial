@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById("form-validation");
     const username = localStorage.getItem('username');
     const loggedIn = localStorage.getItem('loggedIn') === 'true';
+    const profileImage = localStorage.getItem('profileImage');
 
     if (!loggedIn) {
         // Redirigir a la página de login si no está logueado
@@ -9,6 +10,13 @@ document.addEventListener('DOMContentLoaded', () => {
     } else {
         // Prellenar el campo de email
         document.getElementById('email').value = username;
+    }
+
+    // Cargar la imagen de perfil si existe en el localStorage
+    if (profileImage) {
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.src = profileImage;
+        imagePreview.style.display = 'block';
     }
 
     // Manejo del envío del formulario
@@ -54,10 +62,6 @@ function validateOptionalFields(form) {
 
     return valid;
 }
-
-
-
-
 
 function previewImage(event) {
     var reader = new FileReader();
