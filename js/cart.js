@@ -35,32 +35,32 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             cartContainer.appendChild(productElement);
 
-// Manejar cambios de cantidad
-const quantityInput = productElement.querySelector(`#quantity-${index}`);
-        
-    quantityInput.addEventListener('change', (e) => {
-        const newQuantity = parseInt(e.target.value);
-            if (newQuantity > 0) {
-                product.quantity = newQuantity;
+            // Manejar cambios de cantidad
+            const quantityInput = productElement.querySelector(`#quantity-${index}`);
+
+            quantityInput.addEventListener('change', (e) => {
+                const newQuantity = parseInt(e.target.value);
+                if (newQuantity > 0) {
+                    product.quantity = newQuantity;
+                    localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+                    updateSummary();
+                } else {
+                    e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
+                }
+            });
+
+            // Manejar eliminación de producto
+            const trashIcon = productElement.querySelector('.trash');
+
+            trashIcon.addEventListener('click', () => {
+                cartProducts.splice(index, 1); // Eliminar producto
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+                cartContainer.removeChild(productElement);
                 updateSummary();
-            } else {
-                e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
-            }
+            });
         });
 
-// Manejar eliminación de producto
-const trashIcon = productElement.querySelector('.trash');
-            
-    trashIcon.addEventListener('click', () => {
-        cartProducts.splice(index, 1); // Eliminar producto
-        localStorage.setItem("cart_products", JSON.stringify(cartProducts));
-        cartContainer.removeChild(productElement);
         updateSummary();
-        });
-    });
-
-    updateSummary();
     }
 });
 
@@ -80,7 +80,7 @@ function updateSummary() {
             dollarSubtotal += product.cost * product.quantity;
             totalUSD += product.cost * product.quantity; // Sumar al total en USD
         }
-    });
+});
 
     const cartSummary = document.getElementById('summary');
 
@@ -112,3 +112,38 @@ function updateSummary() {
     `;
 }
 
+    // Desafiate E6
+
+    // Parte 2 - Función para actualizar el contador de productos en el carrito
+
+    function updateCartCount() {
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+        const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+        document.getElementById("cart-count").textContent = totalCount;
+    }
+
+    // Llamar a updateCartCount cuando se cargue la página para actualizar el badge
+    document.addEventListener("DOMContentLoaded", updateCartCount);
+
+
+    // Parte 1 - Función para agregar diferentes productos al carrito
+
+    function addToCart(product) {
+        // Obtener el carrito actual o crear uno nuevo si no existe
+        let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+        // Buscar si el producto ya está en el carrito
+        const existingProduct = cart.find(item => item.name === product.name);
+
+        if (existingProduct) {
+            existingProduct.quantity += product.quantity;
+        } else {
+            cart.push(product);
+        }
+
+        // Guardar el carrito actualizado en localStorage
+        localStorage.setItem("cart", JSON.stringify(cart));
+
+        updateCartCount();
+    }
