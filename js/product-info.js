@@ -282,3 +282,22 @@ function loadDarkMode() {
         document.body.classList.add("dark-mode"); // Añadir clase para modo oscuro
     }
 }
+
+//Función que alamacena la información del producto en LocalStorage. 
+const buyButton = document.getElementById ('buy-button');
+
+buyButton.addEventListener ('click', () => {
+
+    // Al hacer click se crea un un objeto con la información del producto
+    const cartProduct = {
+        currency: producto.currency,
+        cost: producto.cost,
+        name: producto.name,
+        image: producto.images[0]
+    };
+
+    localStorage.setItem("cart_product", JSON.stringify(cartProduct));
+
+    alert('Tu producto ha sido añadido exitosamente al carrito');
+
+});
