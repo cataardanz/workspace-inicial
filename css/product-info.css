@@ -43,6 +43,19 @@ h2 {
   justify-content: flex-end;
 }
 
+#buy-button {
+  display: inline-flex;
+  align-items: center; 
+  gap: 20px;
+  padding: 10px 25px;
+  font-size: 14px;
+  margin-right: 8%;
+}
+
+#buy-button i {
+  font-size: 1.5rem;
+}
+
 .footer-content {
   display: flex;
   justify-content: space-between;
@@ -74,15 +87,13 @@ h2 {
 
 .review-card {
   border-radius: 5px;
-  padding-left: 15px;
   padding-top: 15px;
   transition: transform 0.1s ease-in-out;
-  background-color: hsl(0, 0%, 99%);
 }
 
 .checked {
   color: gold;
-  font-size: 20px;
+  font-size: 15px;
   letter-spacing: 3px;
 }
 
@@ -93,7 +104,6 @@ h2 {
 .reviews-container {
   display: flex;
   flex-direction: column;
-  padding: 1em 0em 2em 10px;
 }
 
 @media (max-width: 768px) {
