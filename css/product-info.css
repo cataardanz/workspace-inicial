@@ -125,11 +125,8 @@ body.dark-mode {
   color: white; /* Color de texto en modo oscuro */
   }
   body.dark-mode .user-info{
-    color: #2C2C2E;
-  }
-  body.dark-mode .review-date{
-    color: #2C2C2E;
+    color: white;
   }
   body.dark-mode .card-body{
-    color: #2C2C2E;
+    color: black;
   }
