@@ -35,32 +35,32 @@ document.addEventListener('DOMContentLoaded', () => {
             `;
             cartContainer.appendChild(productElement);
 
-// Manejar cambios de cantidad
-const quantityInput = productElement.querySelector(`#quantity-${index}`);
-        
-    quantityInput.addEventListener('change', (e) => {
-        const newQuantity = parseInt(e.target.value);
-            if (newQuantity > 0) {
-                product.quantity = newQuantity;
+            // Manejar cambios de cantidad
+            const quantityInput = productElement.querySelector(`#quantity-${index}`);
+
+            quantityInput.addEventListener('change', (e) => {
+                const newQuantity = parseInt(e.target.value);
+                if (newQuantity > 0) {
+                    product.quantity = newQuantity;
+                    localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+                    updateSummary();
+                } else {
+                    e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
+                }
+            });
+
+            // Manejar eliminación de producto
+            const trashIcon = productElement.querySelector('.trash');
+
+            trashIcon.addEventListener('click', () => {
+                cartProducts.splice(index, 1); // Eliminar producto
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+                cartContainer.removeChild(productElement);
                 updateSummary();
-            } else {
-                e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
-            }
+            });
         });
 
-// Manejar eliminación de producto
-const trashIcon = productElement.querySelector('.trash');
-            
-    trashIcon.addEventListener('click', () => {
-        cartProducts.splice(index, 1); // Eliminar producto
-        localStorage.setItem("cart_products", JSON.stringify(cartProducts));
-        cartContainer.removeChild(productElement);
         updateSummary();
-        });
-    });
-
-    updateSummary();
     }
 });
 
@@ -80,7 +80,7 @@ function updateSummary() {
             dollarSubtotal += product.cost * product.quantity;
             totalUSD += product.cost * product.quantity; // Sumar al total en USD
         }
-    });
+});
 
     const cartSummary = document.getElementById('summary');
 
@@ -110,5 +110,6 @@ function updateSummary() {
             <button>Comprar</button>
         </div>
     `;
-}
-
+    // Desafiate E6
+    updateCartCount();
+}   

@@ -33,6 +33,15 @@ function configureUserDropdown() {
 }
 configureUserDropdown();
 
+// Desafiate E6
+// Función para actualizar el contador del carrito
+function updateCartCount() {
+  let cart = JSON.parse(localStorage.getItem("cart_products")) || [];
+  const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  document.getElementById("cart-count").textContent = totalCount;
+} 
+
 let showSpinner = function(){
   document.getElementById("spinner-wrapper").style.display = "block";
 }
@@ -89,3 +98,4 @@ async function init(url) {
 
 // Llamar a la función init al cargar la página
 document.addEventListener("DOMContentLoaded", init);
+updateCartCount();

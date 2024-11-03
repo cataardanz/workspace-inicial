@@ -310,6 +310,7 @@ buyButton.addEventListener ('click', () => {
 
         // Guardar el carrito actualizado en localStorage
         localStorage.setItem("cart_products", JSON.stringify(cart_products));
+        updateCartCount()
 
         // Notificación de éxito
         alert('Tu producto ha sido añadido exitosamente al carrito');
