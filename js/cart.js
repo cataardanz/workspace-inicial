@@ -110,40 +110,6 @@ function updateSummary() {
             <button>Comprar</button>
         </div>
     `;
-}
-
     // Desafiate E6
-
-    // Parte 2 - Función para actualizar el contador de productos en el carrito
-
-    function updateCartCount() {
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-        const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
-
-        document.getElementById("cart-count").textContent = totalCount;
-    }
-
-    // Llamar a updateCartCount cuando se cargue la página para actualizar el badge
-    document.addEventListener("DOMContentLoaded", updateCartCount);
-
-
-    // Parte 1 - Función para agregar diferentes productos al carrito
-
-    function addToCart(product) {
-        // Obtener el carrito actual o crear uno nuevo si no existe
-        let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-        // Buscar si el producto ya está en el carrito
-        const existingProduct = cart.find(item => item.name === product.name);
-
-        if (existingProduct) {
-            existingProduct.quantity += product.quantity;
-        } else {
-            cart.push(product);
-        }
-
-        // Guardar el carrito actualizado en localStorage
-        localStorage.setItem("cart", JSON.stringify(cart));
-
-        updateCartCount();
-    }
+    updateCartCount();
+}   
