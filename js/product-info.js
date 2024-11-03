@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Error al obtener los comentarios: ", error);
     });
 
-  // Mostrar las estrellas de reseñas
+    // Mostrar las estrellas de reseñas
     const stars = document.querySelectorAll('.fa-star');
     let lastClickedIndex = -1;
     stars.forEach((star, index) => {
@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 userRating = index + 1; // Guardar la calificación seleccionada
                 lastClickedIndex = index; // Actualizar el índice de la última estrella seleccionada
             }
-         });
+        });
     });
 
     // Capturar el evento de clic en el botón para enviar la calificación y el comentario
@@ -147,7 +147,7 @@ function showComments() {
     let htmlCommentsToAppend = '';
 
     if (comentarios.length > 0) {
-        comentarios.forEach(function(comment) {
+        comentarios.forEach(function (comment) {
             htmlCommentsToAppend += `
                 <div class="review-card">
                     <div class="review-header d-flex justify-content-between">
@@ -211,7 +211,6 @@ function updateStarRating(index, stars) {
 
 document.addEventListener("DOMContentLoaded", function () {
     setupStarRating();
-    // ... el resto de tu código
 });
 
 
@@ -238,11 +237,11 @@ async function fetchRelatedProductData() {
 // Función para renderizar productos relacionados
 function renderRelatedProducts(products) {
     const relatedProductsContainer = document.getElementById('related-products');
-    relatedProductsContainer.innerHTML = ''; 
+    relatedProductsContainer.innerHTML = '';
 
     products.forEach(product => {
         const productElement = document.createElement('div');
-        productElement.classList.add('col-md-4'); 
+        productElement.classList.add('col-md-4');
         productElement.innerHTML = `
         <div class="card mb-4" onclick="updateProduct(${product.id})" style="cursor: pointer;"> <!-- Hacemos la tarjeta clicable -->
             <img src="${product.image}" class="card-img-top" alt="${product.name}">
@@ -269,7 +268,7 @@ function initializeRelatedSection() {
 // Función para actualizar el producto actual
 function updateProduct(id) {
     localStorage.setItem("ProdID", id)
-    window.location.href = `product-info.html`; 
+    window.location.href = `product-info.html`;
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -284,20 +283,39 @@ function loadDarkMode() {
 }
 
 //Función que alamacena la información del producto en LocalStorage. 
-const buyButton = document.getElementById ('buy-button');
+const buyButton = document.getElementById('buy-button');
 
-buyButton.addEventListener ('click', () => {
+buyButton.addEventListener('click', () => {
 
     // Al hacer click se crea un un objeto con la información del producto
-    const cartProduct = {
-        currency: producto.currency,
-        cost: producto.cost,
-        name: producto.name,
-        image: producto.images[0]
-    };
+    try {
+        const cartProduct = {
+            currency: producto.currency,
+            cost: producto.cost,
+            name: producto.name,
+            image: producto.images[0],
+            quantity: 1
+        };
 
-    localStorage.setItem("cart_product", JSON.stringify(cartProduct));
+        // Obtener el carrito actual o crear uno vacío si no existe
+        let cart_products = JSON.parse(localStorage.getItem("cart_products")) || [];
 
-    alert('Tu producto ha sido añadido exitosamente al carrito');
+        // Buscar el producto en el carrito
+        const existingProduct = cart_products.find(p => p.name === cartProduct.name);
+        // Si ya existe, incrementar la cantidad, si no existe, añadirlo como nuevo producto
+        if (existingProduct) {
+            existingProduct.quantity += 1;
+        } else {
+            cart_products.push(cartProduct);
+        }
 
+        // Guardar el carrito actualizado en localStorage
+        localStorage.setItem("cart_products", JSON.stringify(cart_products));
+
+        // Notificación de éxito
+        alert('Tu producto ha sido añadido exitosamente al carrito');
+    } catch (error) {
+        console.error('Error al añadir al carrito:', error);
+        alert('Hubo un problema al añadir el producto al carrito.');
+    }
 });
