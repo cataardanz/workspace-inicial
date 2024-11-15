@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eMercado - Todo lo que busques está aquí</title>
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/font-awesome.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <link href="css/catr1.css" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark p-1">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav w-100 justify-content-between">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Inicio</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="categories.html">Categorías</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="sell.html">Vender</a>
+          </li>
+          <li class="nav-item" id="login-link">
+            <a class="nav-link" href="login.html">Iniciar Sesión</a>
+          </li>
+          <li class="nav-item dropdown" id="user-info" style="display: none;">
+            <a class="nav-link dropdown-toggle active" href="#" id="user-name" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="user-name">
+              <li><a class="dropdown-item" href="#" id="miCarrito">Mi Carrito
+                  <span class="badge text-bg-secondary rounded-pill bg-danger" id="cart-count"> 0
+                    <span class="visually-hidden">productos en el carrito</span>
+                  </span></a></li>
+              <li><a class="dropdown-item" href="#" id="miPerfil">Mi Perfil</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#" id="cerrarSesion">Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <main id="maincontent">
+        <h3>Finalización de Compra</h3>
+        <div id="cart-container">
+            <div id="form">
+                <div class="shipping">
+                    <p class="shipping-title">Envío</p>
+                </div>    
+    
+                <!-- Sección Tipo de Envío -->
+                <p class="shipping-section-title">Tipo de Envío</p>
+                <div class="shipping-section">
+                    <label class="radio"><input type="radio" name="shipping" value="0.15"> Premium - 2 a 5 días (15%)</label>
+                    <label class="radio"><input type="radio" name="shipping" value="0.07"> Express - 5 a 8 días (7%)</label>
+                    <label class="radio"><input type="radio" name="shipping" value="0.05" checked> Standard - 12 a 15 días (5%)</label>
+                </div>
+
+                <!-- Sección Dirección de Envío -->
+                <div class="address-section">
+                    <p class="address-section-title">Dirección de Envío</p>
+                    <input type="text" id="department" placeholder="Departamento">
+                    <input type="text" id="locality" placeholder="Localidad"><br>
+                    <input type="text" id="street" placeholder="Calle">
+                    <input type="text" id="number" placeholder="Número"><br>
+                    <input type="text" id="corner" placeholder="Esquina"><br>
+                </div>
+
+                <div class="payment">
+                    <p class="payment-title">Pago</p>
+                </div>   
+
+            </div>
+
+            <div id="detail">
+                <div id="item">
+                    <div class="title-product">
+                        <p class="title">Detalle del pedido</p>
+                    </div>  
+                
+                    <div id="product-list">    
+                    </div>
+                </div>     
+
+                <div id="cost">
+                    <p class="cost-title">Costo</p>
+                </div>
+            </div>    
+        </div>    
+   </main>
+
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-end">
+        <a href="#">Volver arriba</a>
+      </p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a>
+      </p>
+    </div>
+  </footer>
+  <div id="spinner-wrapper">
+    <div class="lds-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/login_button.js"></script>
+  <script src="js/init.js"></script>
+  <script src="js/cart1.js"></script>
+  <script src="js/auth.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+</body>
+
+</html>    

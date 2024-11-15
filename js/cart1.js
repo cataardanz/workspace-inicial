@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cartContainer = document.getElementById('item');
-    const cartSummary = document.getElementById('cart-summary');
+    const cartContainer = document.getElementById('cart-container');
+    const cartList = document.getElementById('product-list')
+    const cartCost = document.getElementById('cost');
     const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
 
     // Verificar si hay productos en el carrito
@@ -18,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <img src="${product.image}" alt="Imagen del producto">
                 <div class="product-info">
                     <div class="name">
-                        <h3>${product.name}</h3>
+                        <p class="name">${product.name}</p>
                         <div class="trash" data-index="${index}">
                             <ion-icon name="trash-outline"></ion-icon>
                         </div>
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             `;
-            cartContainer.appendChild(productElement);
+            cartList.appendChild(productElement);
 
             // Manejar cambios de cantidad
             const quantityInput = productElement.querySelector(`#quantity-${index}`);
@@ -55,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             trashIcon.addEventListener('click', () => {
                 cartProducts.splice(index, 1); // Eliminar producto
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
-                cartContainer.removeChild(productElement);
+                cartList.removeChild(productElement);
                 updateSummary();
             });
         });
@@ -82,45 +83,20 @@ function updateSummary() {
         }
 });
 
-    const cartSummary = document.getElementById('summary');
+    const cartCost = document.getElementById('cost');
 
-    cartSummary.innerHTML = `
-        <div id="cart-summary">
-            <div class="title-summary">
-                <p>Resumen</p>
+    cartCost.innerHTML = `
+        <div id="cart-cost">
+            <div class="cost-title">
+                <p>Costo</p>
             </div>
-            <div class="text-summary">
-                <div class="subtotal">
-                    <p class="sub">Subtotal</p>
-                    <p>UYU  ${localSubtotal}</p>
+            <div class="text-cost">
+                <div class="tipo-de-cambio">
+                    <p>Tipo de cambio USD 1 - UYU 40</p>
                 </div>
-                <div class="subtotal-usd">
-                    <p class="sub"></p>
-                    <p>USD  ${dollarSubtotal}</p>
-                </div>
-                <div class="total">
-                    <p class="total">Total </p>
-                    <p>UYU ${totalUYU}</p>
-                </div>
-                <div class="total-usd">
-                    <p class="total"></p>
-                    <p>USD ${totalUSD}</p>
-                </div>
-            </div>
-            <button id="buy-button">Comprar</button>
+            </div>    
         </div>
     `;
-
-    /*REDIRIGIR A CART1.HTML AL HACER CLICK EN COMPRAR*/
-const buyButton = document.getElementById('buy-button');
-    
-buyButton.addEventListener('click', () => {
-    window.location.href = 'cart1.html'; // Redirige a cart1.html
-});
-
     // Desafiate E6
     updateCartCount();
 }   
-
-
-   
