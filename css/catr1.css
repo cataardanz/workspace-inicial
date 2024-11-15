@@ -1,0 +1,278 @@
+body {
+    font-family: "Monaco", sans-serif;
+    margin: 0;
+    padding: 0;
+        /* background image set */
+        background-image: url('../img/fondo_login.png');/* Ruta de la imagen */
+        background-size: cover; /* Escala la imagen para cubrir toda la pantalla */
+        background-position: center; /* Centra la imagen */
+        background-repeat: no-repeat; /* Evita que la imagen se repita */
+}
+
+h3 {
+    margin-top: 25px;
+    margin-bottom: 20px;
+    padding-left: 10%;
+    font-weight: normal;
+}
+
+#cart-container {
+    display: grid;
+    justify-content: space-between;
+    grid-template-columns: 57% 40%; /* Aquí definimos el ancho de cada columna */
+    padding: 0% 10% 0% 10%;
+    height: 100vh;
+}
+
+/*Estilos del formulario*/
+#form {
+    border: 1px solid #69B5CC;;
+    height: 100vh;
+    background-color: white;
+}
+
+/*ENVÍO*/
+.shipping-title{
+    padding: 5px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    background-color: #69B5CC;
+    color: rgb(248, 248, 248);
+    font-weight: bold;
+    height: 35px;
+    padding-left: 20px;
+}
+
+.shipping-section-title{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    padding-left: 10px;
+    font-size: medium;
+}
+
+.shipping-section {
+    display: flex;
+    flex-direction: column; 
+    gap: 2px; 
+}
+
+.radio {
+    display: flex;
+    align-items: center; 
+    gap: 10px; /* Ajusta el espacio entre el radio y el texto */
+    font-size: small;
+}
+
+.radio input {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    margin-left: 50px;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+}
+
+.radio input:checked {
+    border-color: orange;
+}
+
+.radio input:checked::before {
+    content: "";
+    width: 10px;
+    height: 10px;
+    background-color: orange;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/*DIRECCIÓN*/
+.address-section-title{
+    margin-bottom: 10px;
+    padding-left: 10px;
+    font-size: medium;
+    margin-top: 30px;
+}
+
+.address-section input{
+    width: 48%;
+    height: 25px;
+    margin-left: 5px;
+    margin-bottom: 10px;
+    font-size: small;
+}
+
+#number {
+    width: 20%;
+}
+
+/*PAGO*/
+.payment-title{
+    padding: 5px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    background-color: #69B5CC;
+    color: rgb(248, 248, 248);
+    font-weight: bold;
+    height: 35px;
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+
+/*Estilos del detalle y costos*/
+#detail{
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background-color: white;  
+}
+
+/*DETALLE DEL PEDIDO*/
+#item {
+    display: flex;
+    flex-direction: column;
+    height: 60%;
+    border: 1px solid #454547;
+    margin-bottom: 5px;
+}
+
+.title-product {
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    background-color: #454547;
+    padding-left: 20px;
+    height: 8%;
+    display: flex;
+    align-items: center;
+}
+
+.title {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: rgb(248, 248, 248);
+}    
+
+#product-list{
+    height: 92%;
+    overflow-y: auto;
+}
+
+.cart-product {
+    border-bottom: 1.5px solid #c2c1c1;
+    height: 25%;
+    display: flex;
+    padding-bottom: 3px;
+    margin-bottom: 3px;
+    margin-right: 3px;
+    margin-left: 3px;
+}
+
+img {
+    height: 100%;
+    width: 30%;
+}
+
+.product-info {
+    margin-left: 10px;
+    width: 100%;
+    height: 100%;
+}
+
+.name {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    height: 30%;
+    margin-bottom: 0;
+    font-weight: bold;
+}
+
+.trash {
+    margin-right: 2px;
+}
+
+.price{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 30%;
+    padding-right: 2px;
+    font-size: smaller;
+}
+
+.price p {
+    margin-bottom: 0;
+}
+
+.quantity {
+    margin-top: 2px;
+    height: 33%;
+    display: flex;
+    align-items: center;
+}
+
+label {
+    display: inline-flex;
+    font-size: smaller;
+}
+
+input {
+    width: 40px;
+    height: 20px;
+    margin-left: 5px;
+    font-size: smaller;
+}
+
+#product-list::-webkit-scrollbar {
+    width: 6px; /* Ancho de la barra de desplazamiento vertical */
+}
+
+#product-list::-webkit-scrollbar-thumb {
+    background-color: rgb(180, 180, 180); /* Color del pulgar de la barra */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+/*COSTO*/
+#cost{
+    height: 40%;
+    border: 1px solid #69B5CC;;
+}
+
+.cost-title {
+    padding: 5px;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    background-color: #69B5CC;
+    color: rgb(248, 248, 248);
+    font-weight: bold;
+    height: 35px;
+    padding-left: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
