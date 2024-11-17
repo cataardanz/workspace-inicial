@@ -1,17 +1,22 @@
 body {
-    font-family: "Monaco", sans-serif;
     margin: 0;
     padding: 0;
-        /* background image set */
-        background-image: url('../img/fondo_login.png');/* Ruta de la imagen */
-        background-size: cover; /* Escala la imagen para cubrir toda la pantalla */
-        background-position: center; /* Centra la imagen */
-        background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-image: url('../img/fondo_login.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-h3 {
-    margin-top: 25px;
-    margin-bottom: 20px;
+hr {
+    margin-top: 1px;
+    margin-bottom:1px;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+#cart-title {
+    margin-top: 40px;
+    margin-bottom: 5px;
     padding-left: 10%;
     font-weight: normal;
 }
@@ -19,47 +24,41 @@ h3 {
 #cart-container {
     display: grid;
     justify-content: space-between;
-    grid-template-columns: 57% 40%; /* Aquí definimos el ancho de cada columna */
+    grid-template-columns: 57% 40%;
     padding: 0% 10% 0% 10%;
-    height: 100vh;
+    /* height: 100vh; */
+
 }
 
 /*Estilos del formulario*/
 #form {
-    border: 1px solid #69B5CC;;
-    height: 100vh;
+    border: 0.5px solid #212529;
     background-color: white;
 }
 
-/*ENVÍO*/
-.shipping-title{
-    padding: 5px;
-    margin-bottom: 5px;
-    text-transform: uppercase;
-    background-color: #69B5CC;
-    color: rgb(248, 248, 248);
+#title {
+    margin-top: 0px;
+    margin-bottom: 1px;
+    background-color: #212529;
+    color: #ffffff;
     font-weight: bold;
-    height: 35px;
-    padding-left: 20px;
 }
 
-.shipping-section-title{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    padding-left: 10px;
-    font-size: medium;
-}
+
+
 
 .shipping-section {
     display: flex;
-    flex-direction: column; 
-    gap: 2px; 
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 10px;
 }
 
 .radio {
     display: flex;
-    align-items: center; 
-    gap: 10px; /* Ajusta el espacio entre el radio y el texto */
+    align-items: center;
+    gap: 10px;
+    /* Ajusta el espacio entre el radio y el texto */
     font-size: small;
 }
 
@@ -91,14 +90,20 @@ h3 {
 }
 
 /*DIRECCIÓN*/
-.address-section-title{
+.address-section-title {
     margin-bottom: 10px;
     padding-left: 10px;
     font-size: medium;
-    margin-top: 30px;
+    margin-top: 10px;
+}
+.shipping-section-title {
+    margin-bottom: 10px;
+    padding-left: 10px;
+    font-size: medium;
+    margin-top: 10px;
 }
 
-.address-section input{
+.address-section input {
     width: 48%;
     height: 25px;
     margin-left: 5px;
@@ -111,11 +116,11 @@ h3 {
 }
 
 /*PAGO*/
-.payment-title{
+.payment-title {
     padding: 5px;
     margin-bottom: 5px;
     text-transform: uppercase;
-    background-color: #69B5CC;
+    background-color: #212529;
     color: rgb(248, 248, 248);
     font-weight: bold;
     height: 35px;
@@ -125,28 +130,26 @@ h3 {
 
 
 /*Estilos del detalle y costos*/
-#detail{
+#detail {
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: white;  
+    background-color: white;
 }
 
 /*DETALLE DEL PEDIDO*/
 #item {
     display: flex;
     flex-direction: column;
-    height: 60%;
-    border: 1px solid #454547;
+    border: 1px solid #212529;
     margin-bottom: 5px;
 }
 
 .title-product {
     margin-bottom: 3px;
     text-transform: uppercase;
-    background-color: #454547;
+    background-color: #212529;
     padding-left: 20px;
-    height: 8%;
     display: flex;
     align-items: center;
 }
@@ -155,16 +158,16 @@ h3 {
     margin-top: 0;
     margin-bottom: 0;
     color: rgb(248, 248, 248);
-}    
+}
 
-#product-list{
+#product-list {
     height: 92%;
     overflow-y: auto;
 }
 
 .cart-product {
     border-bottom: 1.5px solid #c2c1c1;
-    height: 25%;
+    height: 5 rem;
     display: flex;
     padding-bottom: 3px;
     margin-bottom: 3px;
@@ -185,8 +188,8 @@ img {
 
 .name {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
+    justify-content: space-between;
+    align-items: center;
     height: 30%;
     margin-bottom: 0;
     font-weight: bold;
@@ -196,7 +199,7 @@ img {
     margin-right: 2px;
 }
 
-.price{
+.price {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -229,18 +232,22 @@ input {
 }
 
 #product-list::-webkit-scrollbar {
-    width: 6px; /* Ancho de la barra de desplazamiento vertical */
+    width: 6px;
+    /* Ancho de la barra de desplazamiento vertical */
 }
 
 #product-list::-webkit-scrollbar-thumb {
-    background-color: rgb(180, 180, 180); /* Color del pulgar de la barra */
-    border-radius: 10px; /* Bordes redondeados */
+    background-color: rgb(180, 180, 180);
+    /* Color del pulgar de la barra */
+    border-radius: 10px;
+    /* Bordes redondeados */
 }
 
 /*COSTO*/
-#cost{
+#cost {
     height: 40%;
-    border: 1px solid #69B5CC;;
+    border: 1px solid #69B5CC;
+    ;
 }
 
 .cost-title {
@@ -254,25 +261,25 @@ input {
     padding-left: 20px;
 }
 
+.btn.btn-secondary.mb-2.w-100 {
+   background-color: transparent;
+    
+}
+.btn.btn-success.w-100{
+     background-color:  #212529
+}
+#continueShopping{
+    color: #212529;
+}
 
+/* Responsive feature */
 
+/* Margen adicional para evitar elementos pegados en pantallas pequeñas */
+.container {
+    padding: 0 10px;
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* Espaciado vertical en botones */
+button {
+    margin-top: 10px;
+}
