@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cartList = document.getElementById('product-list')
     const cartCost = document.getElementById('cost');
     const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
+    const checkoutButton = document.getElementById('checkoutButton');
 
     // Verificar si hay productos en el carrito
     if (cartProducts.length === 0) {
@@ -64,6 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSummary();
 
     }
+
 });
 
 // Función para actualizar el resumen, poner resumen en UYU Y USD
@@ -91,7 +93,22 @@ function updateSummary() {
     updateCartTitleCount();
 }
 
-//E7 P2b 
+ //Función que muestra el toast de notificación 
+function showToast(message, type = 'danger') {
+    const toastNotification = document.createElement('div');
+    toastNotification.classList.add('toast', `bg-${type}`, 'text-white', 'position-fixed', 'bottom-0', 'end-0', 'm-3');
+    toastNotification.innerHTML = `
+        <div class="toast-body">
+            ${message}
+        </div>
+    `;
+    document.body.appendChild(toastNotification);
+    const toast = new bootstrap.Toast(toastNotification);
+    toast.show();
+    setTimeout(() => {
+        toastNotification.remove();
+    }, 3000);
+}
 
 // Actualiza los costos cada vez que cambie el método de envío
 document.getElementById('shippingOption').addEventListener('change', updateSummary);
@@ -108,3 +125,58 @@ function updateCartTitleCount() {
 }
 
 document.getElementById('shippingOption').addEventListener('change', updateSummary);
+
+checkoutButton.addEventListener('click', (e) => {
+    e.preventDefault(); 
+    
+    // Validación de si el carrito tiene productos
+    const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
+    const isCartValid = cartProducts.length > 0;
+
+    if (!isCartValid) {
+        showToast('Tu carrito está vacío. Por favor agrega productos antes de finalizar la compra.', 'danger');
+        return; // Evita que el resto de la validación se ejecute
+    }
+
+    // Campos de dirección de envío
+    const department = document.getElementById('department').value.trim();
+    const locality = document.getElementById('locality').value.trim();
+    const street = document.getElementById('street').value.trim();
+    const number = document.getElementById('number').value.trim();
+    const corner = document.getElementById('corner').value.trim();
+
+    // Acordeón de tarjeta de crédito  y de transferencia bancaria 
+    const creditCardAccordion = document.getElementById('collapseCreditCard');
+    const bankTransferAccordion = document.getElementById('collapseBankTransfer');
+    
+    // Campos
+    const cardNumber = document.getElementById('cardNumber').value.trim();
+    const cardHolderName = document.getElementById('cardHolderName').value.trim();
+    const expirationDate = document.getElementById('expirationDate').value.trim();
+    const cvv = document.getElementById('cvv').value.trim();
+    const bankAccount = document.getElementById('bankAccount').value.trim();
+
+    let paymentValid = false;
+
+    if (creditCardAccordion.classList.contains('show')) { 
+        // Si el acordeón de tarjeta de crédito está desplegado, verificar campos de tarjeta
+        paymentValid = (cardNumber && cardHolderName && expirationDate && cvv) && !bankAccount;
+    } else if (bankTransferAccordion.classList.contains('show')) { 
+        // Si el acordeón de transferencia bancaria está desplegado, verificar campo de cuenta bancaria
+        paymentValid = bankAccount && !cardNumber && !cardHolderName && !expirationDate && !cvv;
+    }
+
+    // Validar campos de dirección y tipo de envío
+    const shippingOption = document.querySelector('input[name="shipping"]:checked');
+    const isShippingValid = shippingOption;
+    
+    if (!department || !locality || !street || !number || !corner) {
+        showToast('Por favor completa todos los campos de dirección de envío');
+    } else if (!paymentValid) {
+        showToast('Por favor completa todos los campos de método de pago');
+    } else if (!isShippingValid) {
+        showToast('Por favor selecciona una forma de envío');
+    } else {
+        showToast('Tu compra ha sido realizada con éxito', 'success');
+    }
+});
