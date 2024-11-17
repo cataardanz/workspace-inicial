@@ -62,6 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         updateSummary();
+
     }
 });
 
@@ -77,26 +78,33 @@ function updateSummary() {
         if (product.currency === 'UYU') {
             localSubtotal += product.cost * product.quantity;
             totalUYU += product.cost * product.quantity; // Sumar al total en UYU
+            totalUSD += product.cost / 40 * product.quantity;
         } else if (product.currency === 'USD') {
             dollarSubtotal += product.cost * product.quantity;
             totalUSD += product.cost * product.quantity; // Sumar al total en USD
+            totalUYU += product.cost * 40 * product.quantity;
         }
-});
+    });
 
-    const cartCost = document.getElementById('cost');
-
-    cartCost.innerHTML = `
-        <div id="cart-cost">
-            <div class="cost-title">
-                <p>Costo</p>
-            </div>
-            <div class="text-cost">
-                <div class="tipo-de-cambio">
-                    <p>Tipo de cambio USD 1 - UYU 40</p>
-                </div>
-            </div>    
-        </div>
-    `;
     // Desafiate E6
     updateCartCount();
-}   
+    updateCartTitleCount();
+}
+
+//E7 P2b 
+
+// Actualiza los costos cada vez que cambie el método de envío
+document.getElementById('shippingOption').addEventListener('change', updateSummary);
+
+updateSummary();
+
+function updateCartTitleCount() {
+    const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
+    const totalQuantity = cartProducts.reduce((sum, item) => sum + item.quantity, 0);
+    const cartTitle = document.getElementById('cart-title');
+    cartTitle.innerHTML = `
+        <p>Mi carrito (${totalQuantity} Item(s))</p>
+    `;
+}
+
+document.getElementById('shippingOption').addEventListener('change', updateSummary);

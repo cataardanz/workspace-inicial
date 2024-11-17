@@ -54,53 +54,140 @@
     </div>
   </nav>
   <main id="maincontent">
-        <h3>Finalización de Compra</h3>
-        <div id="cart-container">
-            <div id="form">
-                <div class="shipping">
-                    <p class="shipping-title">Envío</p>
-                </div>    
-    
-                <!-- Sección Tipo de Envío -->
-                <p class="shipping-section-title">Tipo de Envío</p>
-                <div class="shipping-section">
-                    <label class="radio"><input type="radio" name="shipping" value="0.15"> Premium - 2 a 5 días (15%)</label>
-                    <label class="radio"><input type="radio" name="shipping" value="0.07"> Express - 5 a 8 días (7%)</label>
-                    <label class="radio"><input type="radio" name="shipping" value="0.05" checked> Standard - 12 a 15 días (5%)</label>
-                </div>
+    <h3 id="cart-title">Mi carrito ()</h3>
 
-                <!-- Sección Dirección de Envío -->
-                <div class="address-section">
-                    <p class="address-section-title">Dirección de Envío</p>
-                    <input type="text" id="department" placeholder="Departamento">
-                    <input type="text" id="locality" placeholder="Localidad"><br>
-                    <input type="text" id="street" placeholder="Calle">
-                    <input type="text" id="number" placeholder="Número"><br>
-                    <input type="text" id="corner" placeholder="Esquina"><br>
-                </div>
+    <div id="cart-container">
+      <div id="form">
+        <div class="title-product">
+          <p class="title"><strong>Detalles de compra</strong></p>
+        </div>
 
-                <div class="payment">
-                    <p class="payment-title">Pago</p>
-                </div>   
+        <!-- Sección Dirección de Envío -->
+        <div class="address-section">
+          <p class="address-section-title">Dirección de Envío</p>
+          <input type="text" id="department" placeholder="Departamento">
+          <input type="text" id="locality" placeholder="Localidad"><br>
+          <input type="text" id="street" placeholder="Calle">
+          <input type="text" id="number" placeholder="Número"><br>
+          <input type="text" id="corner" placeholder="Esquina"><br>
+        </div>
+
+        <!-- Sección Tipo de Envío -->
+        <div class="shipping-section" id="shippingOption">
+          <p class="shipping-section-title">Tipo de Envio</p>
+          <label class="radio"><input type="radio" name="shipping" value=0.15> Premium - 2 a 5 días (15%)</label>
+          <label class="radio"><input type="radio" name="shipping" value=0.07> Express - 5 a 8 días (7%)</label>
+          <label class="radio"><input type="radio" name="shipping" value=0.05 checked> Standard - 12 a 15
+            días(5%)</label>
+        </div>
+
+        <div id="summary">
+          <div class="payment">
+            <div class="title-product">
+              <p class="title"><strong>Método de Pago</strong></p>
+            </div>
+            <div class="accordion" id="paymentAccordion">
+              <!-- Tarjeta de crédito -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingCreditCard">
+                  <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseCreditCard" aria-expanded="true" aria-controls="collapseCreditCard">
+                    Tarjeta de crédito
+                  </button>
+                </h2>
+                <div id="collapseCreditCard" class="accordion-collapse collapse show"
+                  aria-labelledby="headingCreditCard" data-bs-parent="#paymentAccordion">
+                  <div class="accordion-body">
+                    <form id="creditCardForm">
+                      <!-- Número de tarjeta -->
+                      <div class="mb-3">
+                        <label for="cardNumber" class="form-label">Número de tarjeta</label>
+                        <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9123 4567"
+                          required>
+                      </div>
+                      <!-- Nombre en el dorso -->
+                      <div class="mb-3">
+                        <label for="cardHolderName" class="form-label">Nombre en el dorso</label>
+                        <input type="text" class="form-control" id="cardHolderName"
+                          placeholder="Nombre como aparece en la tarjeta" required>
+                      </div>
+                      <!-- Fecha de vencimiento -->
+                      <div class="mb-3">
+                        <label for="expirationDate" class="form-label">Fecha de vencimiento</label>
+                        <input type="text" class="form-control" id="expirationDate" placeholder="MM/AA" required>
+                      </div>
+                      <!-- CVV -->
+                      <div class="mb-3">
+                        <label for="cvv" class="form-label">CVV</label>
+                        <input type="text" class="form-control" id="cvv" placeholder="Código de seguridad" required>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!-- Transferencia bancaria -->
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="headingBankTransfer">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#collapseBankTransfer" aria-expanded="false" aria-controls="collapseBankTransfer">
+                    Transferencia bancaria
+                  </button>
+                </h2>
+                <div id="collapseBankTransfer" class="accordion-collapse collapse" aria-labelledby="headingBankTransfer"
+                  data-bs-parent="#paymentAccordion">
+                  <div class="accordion-body">
+                    <form id="bankTransferForm">
+                      <!-- Número de cuenta -->
+                      <div class="mb-3">
+                        <label for="bankAccount" class="form-label">Número de cuenta</label>
+                        <input type="text" class="form-control" id="bankAccount" placeholder="CLABE bancaria" required>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="title-product">
+            <p class="title"><strong>Resumen de Costos</strong></p>
+          </div>
+          <div class="container mt-4">
+            <div class="row">
+              <div class="col-md">
+                <p>Subtotal: $<span id="subtotal">0.00</span></p>
+                <p>Costo de envío: $<span id="shippingCost">0.00</span></p>
+                <p>Total: $<span id="totalCost">0.00</span></p>
+                <hr/>
+                <p >Tipo de cambio USD 1 - UYU 40</p>
+              </div>
 
             </div>
+          </div>
+        </div>
+      </div>
+      <div id="detail-container">
+        <div id="detail">
+          <div id="item">
+            <div class="title-product">
+              <p class="title"><strong>Productos</strong></p>
+            </div>
+            <div id="product-list">
+            </div>
+          </div>
 
-            <div id="detail">
-                <div id="item">
-                    <div class="title-product">
-                        <p class="title">Detalle del pedido</p>
-                    </div>  
-                
-                    <div id="product-list">    
-                    </div>
-                </div>     
+          <div class="text-center mt-4 d-flex flex-column align-items-center">
+            <button class="btn btn-success w-100" id="checkoutButton">Finalizar compra</button>
+            <br>
+            <a href="categories.html" class="btn btn-secondary mb-2 w-100" id="continueShopping">Seguir
+              comprando</a>
+          </div>
+        </div>
 
-                <div id="cost">
-                    <p class="cost-title">Costo</p>
-                </div>
-            </div>    
-        </div>    
-   </main>
+
+      </div>
+    </div>
+
+  </main>
 
   <footer class="text-muted">
     <div class="container">
@@ -128,4 +215,4 @@
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
-</html>    
+</html>
