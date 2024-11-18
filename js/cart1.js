@@ -53,23 +53,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Manejar eliminación de producto
             const trashIcon = productElement.querySelector('.trash');
-
             trashIcon.addEventListener('click', () => {
                 const itemIndexToDelete = cartProducts.findIndex(p => p.name === product.name)
                 cartProducts.splice(itemIndexToDelete, 1); // Eliminar producto
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
                 cartList.removeChild(productElement);
+                
+                // Mostrar mensaje si el carrito está vacío después de eliminar
+                if (cartProducts.length === 0) {
+                    cartContainer.innerHTML = `
+                        <div id="empty">
+                            <p class="empty">No hay productos en el carrito</p>
+                        </div>`;
+                }
+                
+                updateCartTitleCount();
                 updateSummary();
             });
         });
 
         updateSummary();
-
     }
-
 });
 
-// Función para actualizar el resumen de costos
+// Función para actualizar el resumen de costos en UYU
 function updateSummary() {
     const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
     const shippingOptions = document.getElementsByName('shipping');
@@ -77,36 +84,43 @@ function updateSummary() {
     const shippingCostElement = document.getElementById('shippingCost');
     const totalCostElement = document.getElementById('totalCost');
 
-
     let subtotal = 0;
+    const exchangeRate = 40; // Tipo de cambio: 1 USD = 40 UYU
 
-
-    // Calcular el subtotal
+    // Calcular el subtotal en UYU
     cartProducts.forEach(product => {
-        subtotal += product.cost * product.quantity;
+        let costInUYU;
+        if (product.currency === "USD") {
+            // Convertir de dólares a pesos uruguayos
+            costInUYU = product.cost * exchangeRate;
+        } else {
+            // Si ya está en UYU, usar el costo directamente
+            costInUYU = product.cost;
+        }
+        subtotal += costInUYU * product.quantity;
     });
-
 
     // Obtener la opción de envío seleccionada
     const selectedShipping = [...shippingOptions].find(option => option.checked);
     const shippingRate = selectedShipping ? parseFloat(selectedShipping.value) : 0;
 
-
-    // Calcular el costo de envío
+    // Calcular el costo de envío en UYU
     const shippingCost = subtotal * shippingRate;
     const total = subtotal + shippingCost;
 
-
-    // Actualizar elementos del DOM
-    subtotalElement.innerText = subtotal.toFixed(2);
-    shippingCostElement.innerText = shippingCost.toFixed(2);
-    totalCostElement.innerText = total.toFixed(2);
-    
-    
+    // Actualizar elementos del DOM en UYU
+    subtotalElement.innerText = subtotal.toFixed(2) + " UYU";
+    shippingCostElement.innerText = shippingCost.toFixed(2) + " UYU";
+    totalCostElement.innerText = total.toFixed(2) + " UYU";
     updateCartCount();
     updateCartTitleCount();
 }
 
+// Escuchar cambios en las opciones de envío
+const shippingOptions = document.getElementsByName('shipping');
+shippingOptions.forEach(option => {
+    option.addEventListener('change', updateSummary);
+});
 
  //Función que muestra el toast de notificación 
 function showToast(message, type = 'danger') {
