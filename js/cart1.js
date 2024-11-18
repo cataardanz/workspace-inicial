@@ -55,7 +55,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const trashIcon = productElement.querySelector('.trash');
 
             trashIcon.addEventListener('click', () => {
-                cartProducts.splice(index, 1); // Eliminar producto
+                const itemIndexToDelete = cartProducts.findIndex(p => p.name === product.name)
+                cartProducts.splice(itemIndexToDelete, 1); // Eliminar producto
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
                 cartList.removeChild(productElement);
                 updateSummary();
@@ -100,12 +101,11 @@ function updateSummary() {
     subtotalElement.innerText = subtotal.toFixed(2);
     shippingCostElement.innerText = shippingCost.toFixed(2);
     totalCostElement.innerText = total.toFixed(2);
-}
-
-
-    // Desafiate E6
+    
+    
     updateCartCount();
     updateCartTitleCount();
+}
 
 
  //Función que muestra el toast de notificación 
@@ -138,8 +138,6 @@ function updateCartTitleCount() {
         <p>Mi carrito (${totalQuantity} Item(s))</p>
     `;
 }
-
-document.getElementById('shippingOption').addEventListener('change', updateSummary);
 
 checkoutButton.addEventListener('click', (e) => {
     e.preventDefault(); 
