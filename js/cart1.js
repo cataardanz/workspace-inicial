@@ -68,30 +68,45 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// Función para actualizar el resumen, poner resumen en UYU Y USD
+// Función para actualizar el resumen de costos
 function updateSummary() {
     const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
-    let localSubtotal = 0; // Subtotal en UYU
-    let dollarSubtotal = 0; // Subtotal en USD
-    let totalUYU = 0; // Total en UYU
-    let totalUSD = 0; // Total en USD
+    const shippingOptions = document.getElementsByName('shipping');
+    const subtotalElement = document.getElementById('subtotal');
+    const shippingCostElement = document.getElementById('shippingCost');
+    const totalCostElement = document.getElementById('totalCost');
 
+
+    let subtotal = 0;
+
+
+    // Calcular el subtotal
     cartProducts.forEach(product => {
-        if (product.currency === 'UYU') {
-            localSubtotal += product.cost * product.quantity;
-            totalUYU += product.cost * product.quantity; // Sumar al total en UYU
-            totalUSD += product.cost / 40 * product.quantity;
-        } else if (product.currency === 'USD') {
-            dollarSubtotal += product.cost * product.quantity;
-            totalUSD += product.cost * product.quantity; // Sumar al total en USD
-            totalUYU += product.cost * 40 * product.quantity;
-        }
+        subtotal += product.cost * product.quantity;
     });
+
+
+    // Obtener la opción de envío seleccionada
+    const selectedShipping = [...shippingOptions].find(option => option.checked);
+    const shippingRate = selectedShipping ? parseFloat(selectedShipping.value) : 0;
+
+
+    // Calcular el costo de envío
+    const shippingCost = subtotal * shippingRate;
+    const total = subtotal + shippingCost;
+
+
+    // Actualizar elementos del DOM
+    subtotalElement.innerText = subtotal.toFixed(2);
+    shippingCostElement.innerText = shippingCost.toFixed(2);
+    totalCostElement.innerText = total.toFixed(2);
+}
+
 
     // Desafiate E6
     updateCartCount();
     updateCartTitleCount();
-}
+
 
  //Función que muestra el toast de notificación 
 function showToast(message, type = 'danger') {
