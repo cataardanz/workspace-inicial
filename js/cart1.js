@@ -53,45 +53,74 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Manejar eliminación de producto
             const trashIcon = productElement.querySelector('.trash');
-
             trashIcon.addEventListener('click', () => {
-                cartProducts.splice(index, 1); // Eliminar producto
+                const itemIndexToDelete = cartProducts.findIndex(p => p.name === product.name)
+                cartProducts.splice(itemIndexToDelete, 1); // Eliminar producto
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
                 cartList.removeChild(productElement);
+                
+                // Mostrar mensaje si el carrito está vacío después de eliminar
+                if (cartProducts.length === 0) {
+                    cartContainer.innerHTML = `
+                        <div id="empty">
+                            <p class="empty">No hay productos en el carrito</p>
+                        </div>`;
+                }
+                
+                updateCartTitleCount();
                 updateSummary();
             });
         });
 
         updateSummary();
-
     }
-
 });
 
-// Función para actualizar el resumen, poner resumen en UYU Y USD
+// Función para actualizar el resumen de costos en UYU
 function updateSummary() {
     const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
-    let localSubtotal = 0; // Subtotal en UYU
-    let dollarSubtotal = 0; // Subtotal en USD
-    let totalUYU = 0; // Total en UYU
-    let totalUSD = 0; // Total en USD
+    const shippingOptions = document.getElementsByName('shipping');
+    const subtotalElement = document.getElementById('subtotal');
+    const shippingCostElement = document.getElementById('shippingCost');
+    const totalCostElement = document.getElementById('totalCost');
 
+    let subtotal = 0;
+    const exchangeRate = 40; // Tipo de cambio: 1 USD = 40 UYU
+
+    // Calcular el subtotal en UYU
     cartProducts.forEach(product => {
-        if (product.currency === 'UYU') {
-            localSubtotal += product.cost * product.quantity;
-            totalUYU += product.cost * product.quantity; // Sumar al total en UYU
-            totalUSD += product.cost / 40 * product.quantity;
-        } else if (product.currency === 'USD') {
-            dollarSubtotal += product.cost * product.quantity;
-            totalUSD += product.cost * product.quantity; // Sumar al total en USD
-            totalUYU += product.cost * 40 * product.quantity;
+        let costInUYU;
+        if (product.currency === "USD") {
+            // Convertir de dólares a pesos uruguayos
+            costInUYU = product.cost * exchangeRate;
+        } else {
+            // Si ya está en UYU, usar el costo directamente
+            costInUYU = product.cost;
         }
+        subtotal += costInUYU * product.quantity;
     });
 
-    // Desafiate E6
+    // Obtener la opción de envío seleccionada
+    const selectedShipping = [...shippingOptions].find(option => option.checked);
+    const shippingRate = selectedShipping ? parseFloat(selectedShipping.value) : 0;
+
+    // Calcular el costo de envío en UYU
+    const shippingCost = subtotal * shippingRate;
+    const total = subtotal + shippingCost;
+
+    // Actualizar elementos del DOM en UYU
+    subtotalElement.innerText = subtotal.toFixed(2) + " UYU";
+    shippingCostElement.innerText = shippingCost.toFixed(2) + " UYU";
+    totalCostElement.innerText = total.toFixed(2) + " UYU";
     updateCartCount();
     updateCartTitleCount();
 }
+
+// Escuchar cambios en las opciones de envío
+const shippingOptions = document.getElementsByName('shipping');
+shippingOptions.forEach(option => {
+    option.addEventListener('change', updateSummary);
+});
 
  //Función que muestra el toast de notificación 
 function showToast(message, type = 'danger') {
@@ -123,8 +152,6 @@ function updateCartTitleCount() {
         <p>Mi carrito (${totalQuantity} Item(s))</p>
     `;
 }
-
-document.getElementById('shippingOption').addEventListener('change', updateSummary);
 
 checkoutButton.addEventListener('click', (e) => {
     e.preventDefault(); 
