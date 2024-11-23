@@ -1,10 +1,10 @@
-const CATEGORIES_URL = "https://japceibal.github.io/emercado-api/cats/cat.json";
-const PUBLISH_PRODUCT_URL = "https://japceibal.github.io/emercado-api/sell/publish.json";
-const PRODUCTS_URL = "https://japceibal.github.io/emercado-api/cats_products/";
-const PRODUCT_INFO_URL = "https://japceibal.github.io/emercado-api/products/";
-const PRODUCT_INFO_COMMENTS_URL = "https://japceibal.github.io/emercado-api/products_comments/";
-const CART_INFO_URL = "https://japceibal.github.io/emercado-api/user_cart/";
-const CART_BUY_URL = "https://japceibal.github.io/emercado-api/cart/buy.json";
+const CATEGORIES_URL = "http://localhost:3000/api/categories";
+const PUBLISH_PRODUCT_URL = "http://localhost:3000/api/static/sell/publish.json"; 
+const PRODUCTS_URL = "http://localhost:3000/api/cats_products/"; //
+const PRODUCT_INFO_URL = "http://localhost:3000/api/products"; //
+const PRODUCT_INFO_COMMENTS_URL = "http://localhost:3000/api/products_comments"; //
+const CART_INFO_URL = "http://localhost:3000/api/cart_info"; 
+const CART_BUY_URL = "http://localhost:3000/api/cart_buy";
 const EXT_TYPE = ".json";
 
 // Parte 2 Entrega 5
@@ -87,14 +87,17 @@ document.addEventListener("DOMContentLoaded", checkAuth);
 
 async function init(url) {
   try {
-      const response = await fetch(url);
-      if (!response.ok) throw new Error('Error en la petición');
-      const data = await response.json();
-      // Maneja los datos recibidos aquí
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Error en la petición: ${response.status} ${response.statusText}`);
+    }
+    const data = await response.json();
+    console.log('Datos recibidos:', data);
   } catch (error) {
-      console.error('Error:', error);
+    console.error('Error en la solicitud:', error.message);
   }
 }
+
 
 // Llamar a la función init al cargar la página
 document.addEventListener("DOMContentLoaded", init);
