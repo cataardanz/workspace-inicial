@@ -46,7 +46,7 @@ function searchProducts(query, products) {
 
 document.addEventListener("DOMContentLoaded",function(){
   let catID = localStorage.getItem("catID");
-  let url = `${PRODUCTS_URL}${catID}.json`;
+  let url = `${PRODUCTS_URL}${catID}`;
 
  getJSONData(url).then(function(resultObj) {
     if (resultObj.status === "ok") {

@@ -2,10 +2,10 @@ let producto = {};
 let comentarios = [];
 let userRating = 0; // Definir la variable para calificación
 let prodID = localStorage.getItem("ProdID");
-let urlComments = `${PRODUCT_INFO_COMMENTS_URL}${prodID}.json`;
+let urlComments = `${PRODUCT_INFO_COMMENTS_URL}/${prodID}`;
 
 document.addEventListener("DOMContentLoaded", function () {
-    let url = `${PRODUCT_INFO_URL}${prodID}.json`;
+    let url = `${PRODUCT_INFO_URL}/${prodID}`;
 
     getJSONData(url).then(function (resultObj) {
         if (resultObj.status === "ok") {
@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Parte 4 :)
 
 // URL de la API para obtener los datos de la categoría
-const apiCategoryURL = PRODUCTS_URL + localStorage.getItem("catID") + ".json";
+const apiCategoryURL = PRODUCTS_URL + localStorage.getItem("catID");
 let categoryData = null;
 
 // Función para cargar los datos desde la API
