@@ -1,10 +1,10 @@
-const CATEGORIES_URL = "http://localhost:3000/api/categories";
-const PUBLISH_PRODUCT_URL = "http://localhost:3000/api/static/sell/publish.json"; 
-const PRODUCTS_URL = "http://localhost:3000/api/cats_products/"; //
-const PRODUCT_INFO_URL = "http://localhost:3000/api/products"; //
-const PRODUCT_INFO_COMMENTS_URL = "http://localhost:3000/api/products_comments"; //
-const CART_INFO_URL = "http://localhost:3000/api/cart_info"; 
-const CART_BUY_URL = "http://localhost:3000/api/cart_buy";
+const CATEGORIES_URL = "https://backend-p-jap.onrender.com/api/categories";
+const PUBLISH_PRODUCT_URL = "https://backend-p-jap.onrender.com/api/static/sell/publish.json"; 
+const PRODUCTS_URL = "https://backend-p-jap.onrender.com/api/cats_products/"; //
+const PRODUCT_INFO_URL = "https://backend-p-jap.onrender.com/api/products"; //
+const PRODUCT_INFO_COMMENTS_URL = "https://backend-p-jap.onrender.com/api/products_comments"; //
+const CART_INFO_URL = "https://backend-p-jap.onrender.com/api/cart_info"; 
+const CART_BUY_URL = "https://backend-p-jap.onrender.com/api/cart_buy";
 const EXT_TYPE = ".json";
 
 // Parte 2 Entrega 5
