@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -66,5 +66,6 @@ app.get('/api/cart_info', (req, res) => {
 
 // Iniciar el servidor
 app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+    const baseUrl = "https://backend-p-jap.onrender.com";
+    console.log(`Servidor escuchando en ${baseUrl}`);
 });
