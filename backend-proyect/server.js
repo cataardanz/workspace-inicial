@@ -2,10 +2,19 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const app = express();
-const port = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
+
+//Render listening function
+app.get('/', (req, res) => {
+    res.send('¡Backend activo!');
+});
+
+app.listen(PORT, () => {
+    console.log(`Servidor escuchando en el puerto ${PORT}`);
+});
 
 app.use('/api/static', express.static(path.join(__dirname, 'data')));
 
