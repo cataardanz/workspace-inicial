@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const cartContainer = document.getElementById('item');
-    const cartSummary = document.getElementById('cart-summary');
     const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
+    const cartContainer = document.getElementById('item');
 
     // Verificar si hay productos en el carrito
     if (cartProducts.length === 0) {
@@ -33,13 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>
             `;
-            cartContainer.appendChild(productElement);
+        cartContainer.appendChild(productElement);
 
-            // Manejar cambios de cantidad
-            const quantityInput = productElement.querySelector(`#quantity-${index}`);
+    // Manejar cambios de cantidad
+    const quantityInput = productElement.querySelector(`#quantity-${index}`);
 
-            quantityInput.addEventListener('change', (e) => {
-                const newQuantity = parseInt(e.target.value);
+        quantityInput.addEventListener('change', (e) => {
+            const newQuantity = parseInt(e.target.value);
                 if (newQuantity > 0) {
                     product.quantity = newQuantity;
                     localStorage.setItem("cart_products", JSON.stringify(cartProducts));
@@ -47,40 +46,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
                 }
-            });
-
-            // Manejar eliminación de producto
-            const trashIcon = productElement.querySelector('.trash');
-
-            trashIcon.addEventListener('click', () => {
-                cartProducts.splice(index, 1); // Eliminar producto
-                localStorage.setItem("cart_products", JSON.stringify(cartProducts));
-                cartContainer.removeChild(productElement);
-                updateSummary();
-            });
         });
+
+    // Manejar eliminación de producto
+        const trashIcon = productElement.querySelector('.trash');
+
+        trashIcon.addEventListener('click', () => {
+            cartProducts.splice(index, 1); // Eliminar producto
+            localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+            cartContainer.removeChild(productElement);
+            updateSummary();
+        });
+    });
 
         updateSummary();
     }
-});
+    });
 
-// Función para actualizar el resumen, poner resumen en UYU Y USD
-function updateSummary() {
-    const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
-    let localSubtotal = 0; // Subtotal en UYU
-    let dollarSubtotal = 0; // Subtotal en USD
-    let totalUYU = 0; // Total en UYU
-    let totalUSD = 0; // Total en USD
+    // Función para actualizar el resumen, poner resumen en UYU Y USD
+    function updateSummary() {
+        const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
+        let localSubtotal = 0; // Subtotal en UYU
+        let dollarSubtotal = 0; // Subtotal en USD
+        let totalUYU = 0; // Total en UYU
+        let totalUSD = 0; // Total en USD
 
-    cartProducts.forEach(product => {
-        if (product.currency === 'UYU') {
-            localSubtotal += product.cost * product.quantity;
-            totalUYU += product.cost * product.quantity; // Sumar al total en UYU
-        } else if (product.currency === 'USD') {
-            dollarSubtotal += product.cost * product.quantity;
-            totalUSD += product.cost * product.quantity; // Sumar al total en USD
-        }
-});
+        cartProducts.forEach(product => {
+            if (product.currency === 'UYU') {
+                localSubtotal += product.cost * product.quantity;
+                totalUYU += product.cost * product.quantity; // Sumar al total en UYU
+            } else if (product.currency === 'USD') {
+                dollarSubtotal += product.cost * product.quantity;
+                totalUSD += product.cost * product.quantity; // Sumar al total en USD
+            }
+    });
 
     const cartSummary = document.getElementById('summary');
 
@@ -111,15 +110,15 @@ function updateSummary() {
         </div>
     `;
 
-    /*REDIRIGIR A CART1.HTML AL HACER CLICK EN COMPRAR*/
+/*REDIRIGIR A CART1.HTML AL HACER CLICK EN COMPRAR*/
 const buyButton = document.getElementById('buy-button');
     
 buyButton.addEventListener('click', () => {
     window.location.href = 'cart1.html'; // Redirige a cart1.html
 });
 
-    // Desafiate E6
-    updateCartCount();
+// Desafiate E6
+updateCartCount();
 }   
 
 
