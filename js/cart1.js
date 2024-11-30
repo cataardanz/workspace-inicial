@@ -1,6 +1,102 @@
+const CART_INFO_URL = "https://backend-p-jap.onrender.com/api/cart_info.json";
 const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
 const cartContainer = document.getElementById('cart-container');
 const cartList = document.getElementById('product-list')
+
+// Función para crear un elemento de producto
+function createProductElement(product, index) {
+    const productElement = document.createElement('div');
+    productElement.className = 'cart-product';
+    productElement.innerHTML = `
+      <img src="${product.image}" alt="Imagen del producto">
+      <div class="product-info">
+        <div class="name">
+          <p class="name">${product.name}</p>
+          <div class="trash" data-index="${index}">
+            <ion-icon name="trash-outline"></ion-icon>
+          </div>
+        </div>
+        <div class="price">
+          <p>Precio</p>
+          <p>${product.currency} ${product.cost}</p>
+        </div>
+        <div class="quantity">
+          <label for="quantity-${index}">Cantidad</label>
+          <input type="number" id="quantity-${index}" min="1" value="${product.quantity}">
+        </div>
+      </div>
+    `;
+  
+    // Agregar funcionalidad a los botones
+    const quantityInput = productElement.querySelector(".quantity-input");
+    const removeBtn = productElement.querySelector(".remove-btn");
+  
+    quantityInput.addEventListener("change", (e) => {
+      updateQuantity(product.id, e.target.value);
+    });
+  
+    removeBtn.addEventListener("click", () => {
+      removeProduct(product.id);
+    });
+  
+    return productElement;
+  }
+  
+// Función para obtener los datos del carrito
+const postCartInfo = async () => {
+    try {
+        const response = await fetch('https://backend-p-jap.onrender.com/api/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(cartProducts), // Enviar los productos actuales del carrito
+        });
+        if (!response.ok) {
+            throw new Error("Error al actualizar el carrito");
+        }
+        const data = await response.json();
+        console.log('Carrito actualizado:', data);
+    } catch (error) {
+        console.error('Error al actualizar el carrito:', error);
+    }
+};
+
+
+// Función para renderizar el carrito en el DOM
+const renderCart = (cartData) => {
+
+    // Vaciar el contenedor antes de renderizar
+    cartContainer.innerHTML = "";
+
+    // Iterar por cada producto en el carrito
+    cartData.forEach((product, index) => {
+        const productElement = createProductElement(product, index);
+        cartContainer.appendChild(productElement);
+      });
+    };
+
+// Función para actualizar la cantidad de un producto
+const updateQuantity = (productId, newQuantity) => {
+    console.log(`Actualizar producto ${productId} con cantidad: ${newQuantity}`);
+    postCartInfo();  // Llamar para actualizar el carrito en el backend
+ };
+
+// Función para eliminar un producto del carrito
+const removeProduct = (productId) => {
+    console.log(`Eliminar producto con ID: ${productId}`);
+    const indexToRemove = cartProducts.findIndex(product => product.id === productId);
+    if (indexToRemove !== -1) {
+        cartProducts.splice(indexToRemove, 1); // Eliminar el producto del carrito
+        localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+        cartList.innerHTML = '';  // Limpiar la lista de productos
+        renderCart(cartProducts);  // Volver a renderizar el carrito actualizado
+        postCartInfo();  // Actualizar el carrito en el backend
+    }
+};
+
+// Llamar a la función al cargar la página
+document.addEventListener("DOMContentLoaded", fetchCartInfo);
 
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar si hay productos en el carrito
