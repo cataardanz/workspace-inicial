@@ -1,10 +1,11 @@
-const CATEGORIES_URL = "https://backend-p-jap.onrender.com/api/categories";
-const PUBLISH_PRODUCT_URL = "https://backend-p-jap.onrender.com/api/static/sell/publish.json"; 
-const PRODUCTS_URL = "https://backend-p-jap.onrender.com/api/cats_products/"; //
-const PRODUCT_INFO_URL = "https://backend-p-jap.onrender.com/api/products"; //
-const PRODUCT_INFO_COMMENTS_URL = "https://backend-p-jap.onrender.com/api/products_comments"; //
-const CART_INFO_URL = "https://backend-p-jap.onrender.com/api/cart_info"; 
-const CART_BUY_URL = "https://backend-p-jap.onrender.com/api/cart_buy";
+const BackendBaseUrl = "http://localhost:3000/api";
+const CATEGORIES_URL = BackendBaseUrl + "/categories";
+const PUBLISH_PRODUCT_URL = BackendBaseUrl + "/static/sell/publish.json"; 
+const PRODUCTS_URL = BackendBaseUrl + "/cats_products/"; //
+const PRODUCT_INFO_URL = BackendBaseUrl + "/products"; //
+const PRODUCT_INFO_COMMENTS_URL = BackendBaseUrl + "/products_comments"; //
+const CART_INFO_URL = BackendBaseUrl + "/cart_info"; 
+const CART_BUY_URL = BackendBaseUrl + "/cart_buy";
 const EXT_TYPE = ".json";
 
 // Parte 2 Entrega 5
@@ -102,3 +103,53 @@ async function init(url) {
 // Llamar a la función init al cargar la página
 document.addEventListener("DOMContentLoaded", init);
 updateCartCount();
+
+let token = null;  // Aquí guardaremos el token JWT
+
+// Función para realizar el login
+async function login(username, password) {
+  try {
+      const response = await fetch(`${BackendBaseUrl}/login`, {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password })
+      });
+      if (!response.ok) {
+          throw new Error('Credenciales incorrectas');
+      }
+      const data = await response.json();
+      if (data.token) {
+          token = data.token;
+          console.log('Login exitoso', token);
+          localStorage.setItem('jwtToken', token);
+      }
+  } catch (error) {
+      console.error('Error en login:', error);
+  }
+}
+
+// Función para obtener datos protegidos
+async function getProtectedData() {
+  const tokenFromStorage = localStorage.getItem('jwtToken');
+  if (tokenFromStorage) {
+      try {
+          const response = await fetch(`${BackendBaseUrl}/protected`, {
+              method: 'GET',
+              headers: {
+                  'Authorization': `Bearer ${tokenFromStorage}`
+              }
+          });
+          if (!response.ok) {
+              throw new Error('No autorizado');
+          }
+          const data = await response.json();
+          console.log('Datos protegidos:', data);
+      } catch (error) {
+          console.error('Error al acceder a datos protegidos:', error);
+      }
+  } else {
+      console.log('No hay token disponible. Por favor, inicia sesión.');
+  }
+}

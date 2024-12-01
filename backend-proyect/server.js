@@ -3,6 +3,7 @@ const path = require('path');
 const cors = require('cors');
 const mysql = require('mysql'); // Conexión a la base de datos
 const app = express();
+const jwt = require('jsonwebtoken');
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -51,7 +52,6 @@ app.get('/api/cats_products/:tipo', (req, res) => {
 app.get('/api/products/:tipo', (req, res) => {
     const tipo = req.params.tipo;
     const filePath = path.join(__dirname, 'data', 'products', `${tipo}.json`);
-
     res.sendFile(filePath, (err) => {
         if (err) res.status(404).json({ error: `El archivo ${tipo}.json no existe en products.` });
     });
@@ -61,7 +61,6 @@ app.get('/api/products/:tipo', (req, res) => {
 app.get('/api/products_comments/:tipo', (req, res) => {
     const tipo = req.params.tipo;
     const filePath = path.join(__dirname, 'data', 'products_comments', `${tipo}.json`);
-
     res.sendFile(filePath, (err) => {
         if (err) res.status(404).json({ error: `El archivo ${tipo}.json no existe en products_comments.` });
     });
@@ -194,6 +193,61 @@ app.post('/cart', async (req, res) => {
             });
         }
     });
+});
+// Clave secreta para JWT (en producción usar variable de entorno)
+const JWT_SECRET = 'claveSecretaParaEstudiantes123';
+
+// Usuario de prueba (en producción usar base de datos)
+const USER = {
+    username: 'mail@mail.com',
+    password: '123'
+};
+
+// Tiempo de expiración del token
+const TOKEN_EXPIRATION = '1h';
+
+// Middleware para verificar el token
+const authenticateToken = (req, res, next) => {
+    // Obtener el header de autorización
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
+
+    if (!token) {
+        return res.status(401).json({ message: 'Token no proporcionado' });
+    }
+
+    // Verificar el token
+    jwt.verify(token, JWT_SECRET, (err, user) => {
+        if (err) {
+            return res.status(403).json({ message: 'Token inválido o expirado' });
+        }
+        req.user = user;
+        next();
+    });
+};
+
+// Ruta de login
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    // Verificar credenciales
+    if (username === USER.username && password === USER.password) {
+        // Crear token
+        const token = jwt.sign(
+            { username: USER.username },
+            JWT_SECRET,
+            { expiresIn: TOKEN_EXPIRATION }
+        );
+
+        res.json({ token });
+    } else {
+        res.status(401).json({ message: 'Credenciales inválidas' });
+    }
+});
+
+// Ruta protegida
+app.get('/protected', authenticateToken, (req, res) => {
+    res.json({ message: '¡Acceso permitido al contenido protegido!' });
 });
 
 
