@@ -2,6 +2,129 @@ const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
 const cartContainer = document.getElementById('cart-container');
 const cartList = document.getElementById('product-list')
 
+// Función para crear un elemento de producto
+function createProductElement(product, index) {
+    const productElement = document.createElement('div');
+    productElement.className = 'cart-product';
+    productElement.innerHTML = `
+      <img src="${product.image}" alt="Imagen del producto">
+      <div class="product-info">
+        <div class="name">
+          <p class="name">${product.name}</p>
+          <div class="trash" data-index="${index}">
+            <ion-icon name="trash-outline"></ion-icon>
+          </div>
+        </div>
+        <div class="price">
+          <p>Precio</p>
+          <p>${product.currency} ${product.cost}</p>
+        </div>
+        <div class="quantity">
+          <label for="quantity-${index}">Cantidad</label>
+          <input type="number" id="quantity-${index}" min="1" value="${product.quantity}">
+        </div>
+      </div>
+    `;
+  
+    // Agregar funcionalidad a los botones
+    const quantityInput = productElement.querySelector(".quantity-input");
+    const removeBtn = productElement.querySelector(".remove-btn");
+  
+    quantityInput.addEventListener("change", (e) => {
+      updateQuantity(product.id, e.target.value);
+    });
+  
+    removeBtn.addEventListener("click", () => {
+      removeProduct(product.id);
+    });
+  
+    return productElement;
+  }
+  
+// Función para guardar los datos del carrito
+async function postCartInfo() {
+    try {
+        const userId = localStorage.getItem("username");
+        // este url usa el local por la base de datos
+        for(let product in cartProducts){
+            const response = await fetch('http://localhost:3000/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        "email": userId,
+                    "Producto": cartProducts[product],
+                    "Cantidad": parseInt(cartProducts[product].quantity)
+
+                }
+            ), // Enviar los productos actuales del carrito
+        });
+        if (!response.ok) {
+            throw new Error("Error al actualizar el carrito");
+        }
+    }
+} catch (error) {
+    console.error('Error al actualizar el carrito:', error);
+}
+};
+async function deleteCartItem(productId) {
+    const userId = localStorage.getItem("username");
+    let response = await fetch('http://localhost:3000/cart', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            {
+                "email": userId,
+                "Producto": {
+                    "id": productId
+                },
+                "Cantidad": 0
+
+            }
+        ), // Enviar los productos actuales del carrito
+    });
+    if (!response.ok) {
+        throw new Error("Error al actualizar el carrito");
+    }
+};
+
+
+// Función para renderizar el carrito en el DOM
+const renderCart = (cartData) => {
+
+    // Vaciar el contenedor antes de renderizar
+    cartContainer.innerHTML = "";
+
+    // Iterar por cada producto en el carrito
+    cartData.forEach((product, index) => {
+        const productElement = createProductElement(product, index);
+        cartContainer.appendChild(productElement);
+      });
+    };
+
+// Función para actualizar la cantidad de un producto
+const updateQuantity = (productId, newQuantity) => {
+    console.log(`Actualizar producto ${productId} con cantidad: ${newQuantity}`);
+    postCartInfo();  // Llamar para actualizar el carrito en el backend
+ };
+
+// Función para eliminar un producto del carrito
+const removeProduct = (productId) => {
+    console.log(`Eliminar producto con ID: ${productId}`);
+    const indexToRemove = cartProducts.findIndex(product => product.id === productId);
+    if (indexToRemove !== -1) {
+        cartProducts.splice(indexToRemove, 1); // Eliminar el producto del carrito
+        localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+        cartList.innerHTML = '';  // Limpiar la lista de productos
+        renderCart(cartProducts);  // Volver a renderizar el carrito actualizado
+        deleteCartItem(productId);  // Actualizar el carrito en el backend
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar si hay productos en el carrito
     if (cartProducts.length === 0) {
@@ -43,29 +166,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newQuantity > 0) {
                 product.quantity = newQuantity;
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+                postCartInfo();
                 updateSummary();
             } else {
                 e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
             }
         });
 
-    //Función que maneja la eliminación de productos con icono de papelera.
+        //Función que maneja la eliminación de productos con icono de papelera.
         const trashIcon = productElement.querySelector('.trash');
         trashIcon.addEventListener('click', () => {
+            console.log('Eliminar producto:', product.id);
             const itemIndexToDelete = cartProducts.findIndex(p => p.name === product.name)
             cartProducts.splice(itemIndexToDelete, 1); // Eliminar producto
             localStorage.setItem("cart_products", JSON.stringify(cartProducts));
             cartList.removeChild(productElement);
-                
-    //Mostrar mensaje si el carrito está vacío después de eliminar
-        if (cartProducts.length === 0) {
-            cartContainer.innerHTML = `
+            postCartInfo();
+            deleteCartItem(product.id);
+            
+            //Mostrar mensaje si el carrito está vacío después de eliminar
+            if (cartProducts.length === 0) {
+                cartContainer.innerHTML = `
                 <div id="empty">
-                    <p class="empty">No hay productos en el carrito</p>
+                <p class="empty">No hay productos en el carrito</p>
                 </div>`;
             }   
             updateCartTitleCount();
             updateSummary();});
+            postCartInfo();
         });
 
         updateSummary();}

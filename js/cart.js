@@ -56,9 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem("cart_products", JSON.stringify(cartProducts));
             cartContainer.removeChild(productElement);
             updateSummary();
+            deleteCartItem(product.id);
         });
     });
-
         updateSummary();
     }
     });
@@ -79,6 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 dollarSubtotal += product.cost * product.quantity;
                 totalUSD += product.cost * product.quantity; // Sumar al total en USD
             }
+            postCartInfo();
     });
 
     const cartSummary = document.getElementById('summary');
@@ -117,9 +118,63 @@ buyButton.addEventListener('click', () => {
     window.location.href = 'cart1.html'; // Redirige a cart1.html
 });
 
+  
+// Función para guardar los datos del carrito
+async function postCartInfo() {
+    try {
+        const userId = localStorage.getItem("username");
+        const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
+        // este url usa el local por la base de datos
+        for(let product in cartProducts){
+            const response = await fetch('http://localhost:3000/cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {
+                    "email": userId,
+                    "Producto": cartProducts[product],
+                    "Cantidad": parseInt(cartProducts[product].quantity)
+
+                }
+            ), // Enviar los productos actuales del carrito
+        });
+        if (!response.ok) {
+            throw new Error("Error al actualizar el carrito");
+        }
+    }
+    } catch (error) {
+        console.error('Error al actualizar el carrito:', error);
+    }
+};
+
 // Desafiate E6
 updateCartCount();
 }   
+
+async function deleteCartItem(productId) {
+    const userId = localStorage.getItem("username");
+    let response = await fetch('http://localhost:3000/cart', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            {
+                "email": userId,
+                "Producto": {
+                    "id": productId
+                },
+                "Cantidad": 0
+
+            }
+        ), // Enviar los productos actuales del carrito
+    });
+    if (!response.ok) {
+        throw new Error("Error al actualizar el carrito");
+    }
+};
 
 
    
