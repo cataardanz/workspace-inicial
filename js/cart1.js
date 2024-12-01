@@ -1,4 +1,3 @@
-const CART_INFO_URL = "https://backend-p-jap.onrender.com/api/cart_info.json";
 const cartProducts = JSON.parse(localStorage.getItem("cart_products")) || [];
 const cartContainer = document.getElementById('cart-container');
 const cartList = document.getElementById('product-list')
@@ -42,23 +41,54 @@ function createProductElement(product, index) {
     return productElement;
   }
   
-// Función para obtener los datos del carrito
-const postCartInfo = async () => {
+// Función para guardar los datos del carrito
+async function postCartInfo() {
     try {
-        const response = await fetch('https://backend-p-jap.onrender.com/api/cart', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(cartProducts), // Enviar los productos actuales del carrito
+        const userId = localStorage.getItem("username");
+        // este url usa el local por la base de datos
+        for(let product in cartProducts){
+            const response = await fetch('http://localhost:3000/cart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(
+                    {
+                        "email": userId,
+                    "Producto": cartProducts[product],
+                    "Cantidad": parseInt(cartProducts[product].quantity)
+
+                }
+            ), // Enviar los productos actuales del carrito
         });
         if (!response.ok) {
             throw new Error("Error al actualizar el carrito");
         }
-        const data = await response.json();
-        console.log('Carrito actualizado:', data);
-    } catch (error) {
-        console.error('Error al actualizar el carrito:', error);
+    }
+} catch (error) {
+    console.error('Error al actualizar el carrito:', error);
+}
+};
+async function deleteCartItem(productId) {
+    const userId = localStorage.getItem("username");
+    let response = await fetch('http://localhost:3000/cart', {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(
+            {
+                "email": userId,
+                "Producto": {
+                    "id": productId
+                },
+                "Cantidad": 0
+
+            }
+        ), // Enviar los productos actuales del carrito
+    });
+    if (!response.ok) {
+        throw new Error("Error al actualizar el carrito");
     }
 };
 
@@ -91,12 +121,9 @@ const removeProduct = (productId) => {
         localStorage.setItem("cart_products", JSON.stringify(cartProducts));
         cartList.innerHTML = '';  // Limpiar la lista de productos
         renderCart(cartProducts);  // Volver a renderizar el carrito actualizado
-        postCartInfo();  // Actualizar el carrito en el backend
+        deleteCartItem(productId);  // Actualizar el carrito en el backend
     }
 };
-
-// Llamar a la función al cargar la página
-document.addEventListener("DOMContentLoaded", fetchCartInfo);
 
 document.addEventListener('DOMContentLoaded', () => {
     // Verificar si hay productos en el carrito
@@ -139,29 +166,34 @@ document.addEventListener('DOMContentLoaded', () => {
             if (newQuantity > 0) {
                 product.quantity = newQuantity;
                 localStorage.setItem("cart_products", JSON.stringify(cartProducts));
+                postCartInfo();
                 updateSummary();
             } else {
                 e.target.value = 1; // Restablecer a 1 si se intenta establecer a menos de 1
             }
         });
 
-    //Función que maneja la eliminación de productos con icono de papelera.
+        //Función que maneja la eliminación de productos con icono de papelera.
         const trashIcon = productElement.querySelector('.trash');
         trashIcon.addEventListener('click', () => {
+            console.log('Eliminar producto:', product.id);
             const itemIndexToDelete = cartProducts.findIndex(p => p.name === product.name)
             cartProducts.splice(itemIndexToDelete, 1); // Eliminar producto
             localStorage.setItem("cart_products", JSON.stringify(cartProducts));
             cartList.removeChild(productElement);
-                
-    //Mostrar mensaje si el carrito está vacío después de eliminar
-        if (cartProducts.length === 0) {
-            cartContainer.innerHTML = `
+            postCartInfo();
+            deleteCartItem(product.id);
+            
+            //Mostrar mensaje si el carrito está vacío después de eliminar
+            if (cartProducts.length === 0) {
+                cartContainer.innerHTML = `
                 <div id="empty">
-                    <p class="empty">No hay productos en el carrito</p>
+                <p class="empty">No hay productos en el carrito</p>
                 </div>`;
             }   
             updateCartTitleCount();
             updateSummary();});
+            postCartInfo();
         });
 
         updateSummary();}

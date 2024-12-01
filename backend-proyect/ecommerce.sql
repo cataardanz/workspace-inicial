@@ -22,11 +22,18 @@ USE `ecommerce`;
 -- Volcando estructura para tabla ecommerce.carrito
 CREATE TABLE IF NOT EXISTS `carrito` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
-  `Producto` varchar(50) NOT NULL DEFAULT '0',
+  `UsuarioID` int(11) NOT NULL,
   `Subtotal` float NOT NULL DEFAULT 0,
   `Total` float NOT NULL DEFAULT 0,
-  `Cantidad` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+-- Volcando estructura para tabla ecommerce.carrito
+CREATE TABLE IF NOT EXISTS `productoscarrito` (
+  `CarritoId` int(11) NOT NULL,
+  `ProductoId` int(11) NOT NULL,
+  `cantidad` float NOT NULL DEFAULT 0,
+  PRIMARY KEY (`CarritoId`, `ProductoId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Volcando datos para la tabla ecommerce.carrito: ~0 rows (aproximadamente)
@@ -35,7 +42,9 @@ CREATE TABLE IF NOT EXISTS `carrito` (
 CREATE TABLE IF NOT EXISTS `categoria` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Nombre` varchar(100) NOT NULL DEFAULT '0',
+  `Articulos` int(11) NOT NULL DEFAULT 0,
   `Descripcion` text NOT NULL,
+  `Imagenes` text NOT NULL,
   `CantidadArticulos` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
@@ -45,12 +54,11 @@ CREATE TABLE IF NOT EXISTS `categoria` (
 -- Volcando estructura para tabla ecommerce.producto
 CREATE TABLE IF NOT EXISTS `producto` (
   `Id` int(11) NOT NULL AUTO_INCREMENT,
+  `CategoriaId` int(11) NOT NULL,
   `Nombre` varchar(100) NOT NULL DEFAULT '0',
-  `Descripcion` text NOT NULL,
   `CantidadVendida` int(11) NOT NULL DEFAULT 0,
-  `Foto` varchar(255) NOT NULL DEFAULT '0',
+  `Cantidad` int(11) NOT NULL DEFAULT 0,
   `Precio` float NOT NULL DEFAULT 0,
-  `Reseñas` text NOT NULL,
   PRIMARY KEY (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -63,12 +71,18 @@ CREATE TABLE IF NOT EXISTS `usuario` (
   `Nombre` varchar(50) NOT NULL DEFAULT '0',
   `CorreoElectronico` varchar(100) NOT NULL DEFAULT '0',
   `Contraseña` varchar(100) NOT NULL DEFAULT '0',
-  `Foto` varchar(255) NOT NULL DEFAULT '0',
+  `Imagen` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`Id`),
   UNIQUE KEY `CorreoElectronico` (`CorreoElectronico`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Volcando datos para la tabla ecommerce.usuario: ~0 rows (aproximadamente)
+
+INSERT INTO ecommerce.usuario (Apellido,Nombre,CorreoElectronico,Contraseña,Imagen) VALUES
+	 ('John','Doe','mail@mail.com','123','a');
+INSERT INTO ecommerce.carrito (UsuarioID,Subtotal,Total) VALUES
+	 (1,0.0,0.0);
+
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
